@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>NextGen AI Hub — Conversation Experience</title>
+<title>NextGen AI Hub — AI Business Agent Setup</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<!-- ✅ Whop Embedded Checkout Loader (required) -->
+<!-- Whop Embedded Checkout Loader -->
 <script async defer src="https://js.whop.com/static/checkout/loader.js"></script>
 
 <style>
@@ -60,7 +60,7 @@ p{color:var(--muted);margin:10px 0 0;line-height:1.45}
   color:#fff;
   padding:14px 22px;
   border-radius:14px;
-  font-weight:800;
+  font-weight:900;
   cursor:pointer;
   text-decoration:none;
   box-shadow:0 18px 40px rgba(124,92,255,.18);
@@ -74,11 +74,6 @@ p{color:var(--muted);margin:10px 0 0;line-height:1.45}
   box-shadow:none;
   color:var(--text);
 }
-.btn.link{
-  background:transparent;border:none;box-shadow:none;
-  color:var(--muted);padding:10px 0;font-weight:700;
-  text-decoration:underline;cursor:pointer
-}
 .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px;align-items:center}
 
 .progress{
@@ -91,73 +86,33 @@ p{color:var(--muted);margin:10px 0 0;line-height:1.45}
   transition:.25s ease;
 }
 
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px}
-.avatar{
-  border-radius:16px;
-  overflow:hidden;
-  cursor:pointer;
-  border:2px solid transparent;
-  transition:.18s;
-  background:#0f0f1a;
-  position:relative;
-}
-.avatar img{
-  width:100%;
-  aspect-ratio: 4/5;
-  object-fit:cover;
-  display:block;
-  border-radius:14px;
-}
-.avatar .label{
-  padding:10px 12px 14px;
-  font-size:12px;
-  color:var(--muted);
-}
-.avatar:hover{transform:translateY(-3px)}
-.avatar.active{border-color:var(--accent);box-shadow:0 0 0 4px rgba(124,92,255,.14)}
-
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:14px}
 .choice{
   padding:14px;
   background:#17172b;
   border:1px solid rgba(255,255,255,.06);
   border-radius:14px;
-  margin-top:10px;
   cursor:pointer;
   transition:.15s;
 }
 .choice:hover{background:#1e1e38}
 
-.chatwrap{
-  display:flex;gap:16px;align-items:center;flex-wrap:wrap;
+.summary{
   margin-top:14px;
   padding:14px;
   border-radius:18px;
   background:rgba(0,0,0,.22);
   border:1px solid rgba(255,255,255,.07);
 }
-.chatwrap img{
-  width:88px;height:88px;border-radius:18px;object-fit:cover;
-  border:1px solid rgba(255,255,255,.08);
-  box-shadow:0 18px 40px rgba(0,0,0,.35);
+.summary .row{
+  display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;
+  padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06);
 }
-.bubble{
-  flex:1;
-  min-width:220px;
-  padding:12px 14px;
-  border-radius:16px;
-  background:rgba(255,255,255,.04);
-  border:1px solid rgba(255,255,255,.06);
-  color:var(--text);
-  line-height:1.45;
-}
-.bubble .muted{color:var(--muted);font-size:12px;margin-top:6px}
+.summary .row:last-child{border-bottom:none}
+.k{color:var(--muted);font-size:12px}
+.v{color:var(--text);font-weight:800}
 
-.priceRow{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-  gap:14px;
-  margin-top:14px;
-}
+.priceRow{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:14px}
 .plan{
   padding:16px;border-radius:18px;
   background:rgba(255,255,255,.03);
@@ -171,7 +126,7 @@ p{color:var(--muted);margin:10px 0 0;line-height:1.45}
   border:1px solid rgba(124,92,255,.22);
   color:var(--text);
 }
-.plan .big{font-size:30px;font-weight:900;margin:10px 0 2px}
+.plan .big{font-size:34px;font-weight:1000;margin:10px 0 2px}
 .plan ul{margin:10px 0 0;padding-left:18px;color:var(--muted)}
 .plan li{margin:6px 0}
 
@@ -182,77 +137,49 @@ p{color:var(--muted);margin:10px 0 0;line-height:1.45}
 }
 
 /* =========================
-   ✅ Whop Modal (Professional + Responsive + Scroll)
+   Whop Modal — match screenshot size + clean scroll
    ========================= */
 .ng-modal{
-  position:fixed;
-  inset:0;
+  position:fixed; inset:0;
   display:none;
   z-index:9999;
 }
 .ng-modal.is-open{display:block}
-
 .ng-modal__backdrop{
-  position:absolute;
-  inset:0;
+  position:absolute; inset:0;
   background:rgba(0,0,0,.72);
   backdrop-filter: blur(6px);
 }
-
 .ng-modal__panel{
   position:relative;
-  width:min(1020px, calc(100% - 20px));
-  height:min(92vh, 820px);
-  margin:10px auto;
+  width:min(980px, calc(100% - 16px)); /* screenshot-like width */
+  height:min(86vh, 760px);            /* screenshot-like height */
+  margin:8vh auto 0;                  /* top breathing room */
   background:#0b0b0f;
   border:1px solid rgba(255,255,255,.10);
-  border-radius:18px;
+  border-radius:16px;
   box-shadow:0 30px 90px rgba(0,0,0,.65);
   overflow:hidden;
-
-  display:flex;
-  flex-direction:column;
+  display:flex; flex-direction:column;
 }
-
 .ng-modal__header{
-  padding:14px 16px;
+  padding:12px 14px;
   border-bottom:1px solid rgba(255,255,255,.08);
   background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,0));
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
 }
-
-.ng-modal__title{
-  font-weight:900;
-  font-size:15px;
-  letter-spacing:-.2px;
-}
-
-.ng-modal__subtitle{
-  opacity:.75;
-  font-size:12px;
-  white-space:nowrap;
-}
-
+.ng-modal__title{font-weight:1000;font-size:14px;letter-spacing:-.2px}
+.ng-modal__subtitle{opacity:.75;font-size:12px;white-space:nowrap}
 .ng-modal__close{
-  position:absolute;
-  top:10px;
-  right:10px;
-  width:40px;
-  height:40px;
-  border-radius:12px;
+  width:40px;height:40px;border-radius:12px;
   border:1px solid rgba(255,255,255,.10);
   background:rgba(255,255,255,.06);
-  color:#fff;
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  color:#fff;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
 }
 .ng-modal__close:hover{ background:rgba(255,255,255,.10); }
 
+/* The important part: internal scroll area like your screenshot */
 #whop-embedded-checkout{
   flex:1;
   min-height:0;
@@ -260,6 +187,8 @@ p{color:var(--muted);margin:10px 0 0;line-height:1.45}
   -webkit-overflow-scrolling: touch;
   background:#fff;
 }
+
+/* subtle scrollbar */
 #whop-embedded-checkout::-webkit-scrollbar{ width:10px; }
 #whop-embedded-checkout::-webkit-scrollbar-thumb{
   background: rgba(0,0,0,.18);
@@ -268,9 +197,7 @@ p{color:var(--muted);margin:10px 0 0;line-height:1.45}
 
 .ng-modal__error{
   position:absolute;
-  left:16px;
-  right:16px;
-  bottom:14px;
+  left:14px; right:14px; bottom:12px;
   padding:10px 12px;
   border-radius:12px;
   background:rgba(255,0,0,.12);
@@ -280,13 +207,14 @@ p{color:var(--muted);margin:10px 0 0;line-height:1.45}
 }
 
 @media (max-width: 640px){
+  .container{padding:18px}
   .ng-modal__panel{
     width: calc(100% - 12px);
-    height: 94vh;
-    margin: 6px auto;
-    border-radius: 16px;
+    height: 92vh;
+    margin: 4vh auto 0;
+    border-radius: 14px;
   }
-  .ng-modal__subtitle{ display:none; }
+  .ng-modal__subtitle{display:none;}
 }
 </style>
 </head>
@@ -297,50 +225,45 @@ p{color:var(--muted);margin:10px 0 0;line-height:1.45}
 <!-- HERO -->
 <div id="hero" class="card">
   <div class="toprow">
-    <div class="pill">chat.nextgenaihub.net • Personalized AI conversation</div>
-    <div class="pill">Safe content • No therapy • No adult interactions</div>
+    <div class="pill">NextGen AI Hub • AI Business Chat Agent</div>
+    <div class="pill">Safe • No therapy • No adult content</div>
   </div>
 
-  <h1 style="margin-top:16px;">Create Your Conversation Experience</h1>
-  <p>Choose a style. Answer 3 quick questions. Get a personalized conversation setup in seconds.</p>
+  <h1 style="margin-top:16px;">Build Your AI Business Agent</h1>
+  <p>Pick a use case. Answer 3 quick questions. Get a ready-to-launch AI agent setup in seconds.</p>
 
   <div class="actions">
-    <button class="btn" onclick="go('avatars')">Start Free Experience</button>
+    <button class="btn" onclick="go('usecases')">Create My Agent</button>
     <button class="btn secondary" onclick="scrollToHow()">How it works</button>
   </div>
 
   <div id="how" class="footerNote">
-    <p class="small">
-      ⚡ Fast setup • 🔒 Secure checkout handled by Whop • ✅ Works on all devices
-    </p>
+    <p class="small">⚡ 60-second setup • 🔒 Secure checkout by Whop • ✅ Works on mobile & desktop</p>
   </div>
 </div>
 
-<!-- AVATAR SELECT -->
-<div id="avatars" class="card hidden">
+<!-- USE CASE -->
+<div id="usecases" class="card hidden">
   <div class="progress"><div class="bar" style="width:20%"></div></div>
-  <h2>Choose a conversation style</h2>
-  <p class="small">Pick the vibe that fits you. You can change it anytime.</p>
+  <h2>Choose your use case</h2>
+  <p class="small">This helps us generate the best default behavior for your agent.</p>
 
-  <div class="grid" style="margin-top:14px;">
-    <div class="avatar" onclick="selectAvatar(1)">
-      <img src="assets/companion1.png" alt="Friendly & Conversational">
-      <div class="label">Friendly & Conversational</div>
+  <div class="grid">
+    <div class="choice" onclick="pickUseCase('Lead capture & qualification')">
+      <b>Lead capture & qualification</b><br>
+      <span class="small">Turn chats into booked calls & qualified leads.</span>
     </div>
-
-    <div class="avatar" onclick="selectAvatar(2)">
-      <img src="assets/companion2.png" alt="Calm & Insightful">
-      <div class="label">Calm & Insightful</div>
+    <div class="choice" onclick="pickUseCase('Customer support (FAQ)')">
+      <b>Customer support (FAQ)</b><br>
+      <span class="small">Instant answers, order status, and escalation.</span>
     </div>
-
-    <div class="avatar" onclick="selectAvatar(3)">
-      <img src="assets/companion3.png" alt="Focused & Thoughtful">
-      <div class="label">Focused & Thoughtful</div>
+    <div class="choice" onclick="pickUseCase('Appointments & bookings')">
+      <b>Appointments & bookings</b><br>
+      <span class="small">Collect info, schedule, confirm, and remind.</span>
     </div>
-
-    <div class="avatar" onclick="selectAvatar(4)">
-      <img src="assets/companion4.png" alt="Experienced & Professional">
-      <div class="label">Experienced & Professional</div>
+    <div class="choice" onclick="pickUseCase('Sales assistant')">
+      <b>Sales assistant</b><br>
+      <span class="small">Recommend offers, handle objections, close.</span>
     </div>
   </div>
 
@@ -352,69 +275,67 @@ p{color:var(--muted);margin:10px 0 0;line-height:1.45}
 <!-- QUIZ -->
 <div id="quiz" class="card hidden">
   <div class="progress"><div id="bar" class="bar"></div></div>
-
   <h2 id="q"></h2>
   <div id="opts"></div>
-
   <div class="actions">
-    <button class="btn secondary" onclick="go('avatars')">Back</button>
+    <button class="btn secondary" onclick="go('usecases')">Back</button>
   </div>
 </div>
 
 <!-- LOADING -->
 <div id="loading" class="card hidden">
-  <h2>Customizing your experience…</h2>
-  <p>Matching your style + preferences</p>
+  <h2>Generating your agent setup…</h2>
+  <p>Creating your default tone, flow, and responses</p>
   <div class="progress" style="margin-top:16px;"><div id="loadbar" class="bar" style="width:0%"></div></div>
-  <p class="small" id="loadtxt" style="margin-top:10px;">Preparing your first message…</p>
+  <p class="small" id="loadtxt" style="margin-top:10px;">Preparing your starter script…</p>
 </div>
 
 <!-- RESULT -->
 <div id="result" class="card hidden">
-  <h2>Your experience is ready</h2>
+  <h2>Your AI agent setup is ready</h2>
+  <p class="small">Here’s what will be used as your initial behavior (you can edit later).</p>
 
-  <div class="chatwrap">
-    <img id="avatarPreview" src="assets/companion1.png" alt="Selected companion">
-    <div class="bubble">
-      <div id="resMsg">“I’m here to explore ideas with you — whether it’s deep thinking, creative stories, or everyday conversation.”</div>
-      <div class="muted">Your selected style is ready. Continue to unlock full access.</div>
-    </div>
+  <div class="summary">
+    <div class="row"><div class="k">Use case</div><div class="v" id="rUseCase">—</div></div>
+    <div class="row"><div class="k">Audience</div><div class="v" id="rAudience">—</div></div>
+    <div class="row"><div class="k">Tone</div><div class="v" id="rTone">—</div></div>
+    <div class="row"><div class="k">Reply length</div><div class="v" id="rLength">—</div></div>
   </div>
 
   <div class="actions">
-    <button class="btn secondary" onclick="go('avatars')">Change style</button>
+    <button class="btn secondary" onclick="go('usecases')">Change use case</button>
     <button class="btn" onclick="go('price')">Continue</button>
   </div>
 
-  <p class="small" style="margin-top:10px;">Tip: Most users start the free trial right after setup to keep personalization.</p>
+  <p class="small" style="margin-top:10px;">Most teams start the trial immediately to lock in the setup.</p>
 </div>
 
-<!-- PRICE (✅ Updated for free trial) -->
+<!-- PRICE -->
 <div id="price" class="card hidden">
   <div class="toprow">
     <div class="pill">7-day free trial included</div>
     <div class="pill">Cancel anytime</div>
   </div>
 
-  <h2 style="margin-top:14px;">Start Your Free Trial</h2>
-  <p class="small">No charge today. Your selected conversation style is saved.</p>
+  <h2 style="margin-top:14px;">Launch your agent</h2>
+  <p class="small">Start free today. After 7 days: $19/month. No charge now.</p>
 
   <div class="priceRow">
     <div class="plan">
-      <div class="tag">Free Trial</div>
+      <div class="tag">Best for getting results fast</div>
       <div class="big">$0 today</div>
       <div class="small">Then $19 / month after 7 days</div>
       <ul>
-        <li>7-day free trial</li>
         <li>Unlimited safe conversations</li>
+        <li>Lead capture / support / booking flows</li>
         <li>Cancel anytime during trial</li>
-        <li>No commitment</li>
+        <li>Secure checkout handled by Whop</li>
       </ul>
     </div>
   </div>
 
   <div class="actions" style="margin-top:18px;">
-    <button class="btn" onclick="openWhopModal()">Start 7-Day Free Trial</button>
+    <button class="btn" onclick="openWhopModal()">Start Free Trial & Launch</button>
     <button class="btn secondary" onclick="go('result')">Back</button>
   </div>
 
@@ -426,12 +347,12 @@ p{color:var(--muted);margin:10px 0 0;line-height:1.45}
 <!-- SUCCESS -->
 <div id="success" class="card hidden">
   <div class="toprow">
-    <div class="pill">Trial started</div>
+    <div class="pill">Trial active</div>
     <div class="pill">Cancel anytime</div>
   </div>
 
-  <h2 style="margin-top:14px;">✅ Free trial active</h2>
-  <p class="small">You’re in. Your trial is active and your setup is saved.</p>
+  <h2 style="margin-top:14px;">✅ You’re set</h2>
+  <p class="small">Trial is active. Next step: connect your agent to your channel (WhatsApp / web chat) and go live.</p>
 
   <div class="footerNote">
     <p class="small" style="margin:0;">
@@ -443,26 +364,21 @@ p{color:var(--muted);margin:10px 0 0;line-height:1.45}
     <button class="btn" onclick="go('hero')">Back to start</button>
     <button class="btn secondary" onclick="go('result')">View setup</button>
   </div>
-
-  <p class="small" style="margin-top:10px;">
-    Next: we’ll add webhook-based unlock automation. For now, this confirms your trial and routes you forward.
-  </p>
 </div>
 
 </div>
 
-<!-- ✅ Whop Checkout Modal -->
+<!-- Whop Checkout Modal -->
 <div id="whopModal" class="ng-modal" aria-hidden="true">
   <div class="ng-modal__backdrop" onclick="closeWhopModal()"></div>
 
   <div class="ng-modal__panel" role="dialog" aria-modal="true" aria-label="Checkout">
-    <button class="ng-modal__close" onclick="closeWhopModal()" aria-label="Close checkout">✕</button>
-
     <div class="ng-modal__header">
       <div>
-        <div class="ng-modal__title">Start Free Trial</div>
+        <div class="ng-modal__title">Secure Checkout</div>
         <div class="ng-modal__subtitle">7 days free · Cancel anytime</div>
       </div>
+      <button class="ng-modal__close" onclick="closeWhopModal()" aria-label="Close checkout">✕</button>
     </div>
 
     <div
@@ -480,39 +396,20 @@ p{color:var(--muted);margin:10px 0 0;line-height:1.45}
 </div>
 
 <script>
-/**
- * CONFIG
- */
+/** CONFIG */
 const WHOP_PLAN_ID = "plan_bjy3o9ZScfqmY";
 const RETURN_URL = "https://nextgenaihub.net/?whop_return=1";
 
-/**
- * Avatar images
- */
-const AVATAR_BASE = {
-  1: "assets/companion1.png",
-  2: "assets/companion2.png",
-  3: "assets/companion3.png",
-  4: "assets/companion4.png",
-};
-
-function getMessagePoseSrc(n){
-  return AVATAR_BASE[n];
-  // If you upload these later:
-  // return `assets/companion${n}_msg.png`;
-}
-
-let avatar = 1;
 let step = 0;
-let firstAvatarVisit = true;
-
+let firstUsecaseVisit = true;
+let useCase = "";
 const answers = [];
 
-// Safe questions
+/** Quiz (business-safe) */
 const qs = [
-  ["What kind of conversations do you enjoy most?", ["Creative storytelling", "Deep conversations", "Daily conversations", "Ideas & brainstorming"]],
-  ["Choose a tone", ["Calm", "Playful", "Bold", "Thoughtful"]],
-  ["Reply style?", ["Short", "Balanced", "Detailed"]],
+  ["Who is your main audience?", ["Local customers", "Online leads", "Existing clients", "Mixed"]],
+  ["Choose your agent tone", ["Professional", "Friendly", "Direct", "Premium"]],
+  ["Reply length", ["Short", "Balanced", "Detailed"]],
 ];
 
 function scrollToHow(){
@@ -523,12 +420,11 @@ function go(id){
   document.querySelectorAll('.card').forEach(c => c.classList.add('hidden'));
   document.getElementById(id).classList.remove('hidden');
 
-  if(id === 'avatars' && firstAvatarVisit){
-    firstAvatarVisit = false;
-    selectAvatar(1, true);
+  if(id === 'usecases' && firstUsecaseVisit){
+    firstUsecaseVisit = false;
   }
 
-  if(id === 'avatars'){
+  if(id === 'usecases'){
     step = 0;
     answers.length = 0;
     const b = document.getElementById('bar');
@@ -536,7 +432,77 @@ function go(id){
   }
 }
 
-/* ✅ Whop modal controls */
+function pickUseCase(v){
+  useCase = v;
+  setTimeout(() => { go('quiz'); render(); }, 160);
+}
+
+function render(){
+  const b = document.getElementById('bar');
+  if(b) b.style.width = ((step+1)/qs.length*100) + '%';
+
+  document.getElementById('q').innerText = qs[step][0];
+
+  let o = document.getElementById('opts');
+  o.innerHTML = '';
+
+  qs[step][1].forEach(v => {
+    let d = document.createElement('div');
+    d.className = 'choice';
+    d.innerText = v;
+    d.onclick = () => next(v);
+    o.appendChild(d);
+  });
+}
+
+function next(choice){
+  answers.push(choice);
+  step++;
+
+  if(step < qs.length){
+    render();
+    return;
+  }
+
+  go('loading');
+  const loadbar = document.getElementById('loadbar');
+  const loadtxt = document.getElementById('loadtxt');
+
+  let pct = 0;
+  const msgs = [
+    "Preparing your starter script…",
+    "Building your flow…",
+    "Finalizing agent rules…",
+    "Ready."
+  ];
+
+  const timer = setInterval(() => {
+    pct += Math.floor(Math.random()*16) + 10;
+    if(pct > 100) pct = 100;
+    if(loadbar) loadbar.style.width = pct + "%";
+    if(loadtxt){
+      const idx = Math.min(msgs.length-1, Math.floor(pct/34));
+      loadtxt.innerText = msgs[idx];
+    }
+    if(pct >= 100){
+      clearInterval(timer);
+      setTimeout(() => showResult(), 220);
+    }
+  }, 170);
+}
+
+function showResult(){
+  go('result');
+
+  const [audience, tone, length] = answers;
+
+  document.getElementById("rUseCase").innerText = useCase || "—";
+  document.getElementById("rAudience").innerText = audience || "—";
+  document.getElementById("rTone").innerText = tone || "—";
+  document.getElementById("rLength").innerText = length || "—";
+}
+
+/* Whop modal controls (unchanged behavior) */
 function openWhopModal(){
   const modal = document.getElementById("whopModal");
   const checkout = document.getElementById("whop-embedded-checkout");
@@ -605,99 +571,7 @@ window.onCheckoutStateChange = (state) => {
   }
 })();
 
-/* Funnel logic */
-function selectAvatar(n, skipAutoGo){
-  avatar = n;
-
-  document.querySelectorAll('.avatar').forEach(a => a.classList.remove('active'));
-  document.querySelectorAll('.avatar')[n-1].classList.add('active');
-
-  const preview = document.getElementById("avatarPreview");
-  if(preview){ preview.src = getMessagePoseSrc(n); }
-
-  if(skipAutoGo) return;
-
-  setTimeout(() => { go('quiz'); render(); }, 180);
-}
-
-function render(){
-  const b = document.getElementById('bar');
-  if(b) b.style.width = ((step+1)/qs.length*100) + '%';
-
-  document.getElementById('q').innerText = qs[step][0];
-
-  let o = document.getElementById('opts');
-  o.innerHTML = '';
-
-  qs[step][1].forEach(v => {
-    let d = document.createElement('div');
-    d.className = 'choice';
-    d.innerText = v;
-    d.onclick = () => next(v);
-    o.appendChild(d);
-  });
-}
-
-function next(choice){
-  answers.push(choice);
-  step++;
-
-  if(step < qs.length){
-    render();
-    return;
-  }
-
-  go('loading');
-  const loadbar = document.getElementById('loadbar');
-  const loadtxt = document.getElementById('loadtxt');
-
-  let pct = 0;
-  const msgs = [
-    "Preparing your first message…",
-    "Adjusting tone and pacing…",
-    "Finalizing conversation style…",
-    "Ready."
-  ];
-
-  const timer = setInterval(() => {
-    pct += Math.floor(Math.random()*16) + 10;
-    if(pct > 100) pct = 100;
-    if(loadbar) loadbar.style.width = pct + "%";
-    if(loadtxt){
-      const idx = Math.min(msgs.length-1, Math.floor(pct/34));
-      loadtxt.innerText = msgs[idx];
-    }
-    if(pct >= 100){
-      clearInterval(timer);
-      setTimeout(() => showResult(), 280);
-    }
-  }, 180);
-}
-
-function showResult(){
-  go('result');
-
-  const [topic, tone, style] = answers;
-  const toneLine = {
-    Calm: "calm and clear",
-    Playful: "light and creative",
-    Bold: "direct and confident",
-    Thoughtful: "deep and reflective"
-  }[tone] || "balanced";
-
-  const styleLine = {
-    Short: "short replies",
-    Balanced: "balanced replies",
-    Detailed: "detailed replies"
-  }[style] || "balanced replies";
-
-  document.getElementById('resMsg').innerText =
-    `“Perfect — I’ll keep it ${toneLine} with ${styleLine}. Let’s start with ${String(topic || "").toLowerCase()}.”`;
-
-  const preview = document.getElementById("avatarPreview");
-  if(preview) preview.src = getMessagePoseSrc(avatar);
-}
-
+/* Start */
 go('hero');
 </script>
 
