@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>StreamVault — Paiement sécurisé & activation instantanée</title>
+  <meta name="description" content="Paiement sécurisé par carte. Activation instantanée après paiement. Support WhatsApp.">
+  <meta name="theme-color" content="#0b0f1f"/>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#070a14;
+      --panel:#0b1020;
+      --card: rgba(255,255,255,.06);
+      --stroke: rgba(255,255,255,.12);
+      --text:#eef0ff;
+      --muted:#a7acc7;
+      --accent:#7c5cff;
+      --accent2:#4ade80;
+      --danger:#ff4d6d;
+      --shadow: 0 18px 60px rgba(0,0,0,.45);
+      --radius: 18px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      color:var(--text);
+      background:
+        radial-gradient(1000px 500px at 20% -10%, rgba(124,92,255,.30), transparent 60%),
+        radial-gradient(900px 500px at 90% 10%, rgba(74,222,128,.22), transparent 55%),
+        radial-gradient(900px 600px at 30% 110%, rgba(124,92,255,.20), transparent 60%),
+        var(--bg);
+    }
+    a{color:inherit;text-decoration:none}
+    .wrap{max-width:1100px;margin:0 auto;padding:22px}
+    .topbar{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      padding:14px 18px;border:1px solid var(--stroke);
+      background:rgba(11,16,32,.55);
+      backdrop-filter: blur(10px);
+      border-radius:16px;
+    }
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.2px}
+    .dot{
+      width:12px;height:12px;border-radius:999px;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      box-shadow:0 0 0 6px rgba(124,92,255,.14);
+    }
+    .badge{
+      font-size:12px;color:var(--muted);
+      border:1px solid var(--stroke);
+      padding:6px 10px;border-radius:999px;
+      background:rgba(255,255,255,.04);
+      white-space:nowrap;
+    }
+
+    .grid{
+      margin-top:18px;
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap:18px;
+    }
+    @media (max-width: 900px){
+      .grid{grid-template-columns:1fr}
+    }
+
+    .hero{
+      border:1px solid var(--stroke);
+      background:rgba(11,16,32,.55);
+      backdrop-filter: blur(10px);
+      border-radius: var(--radius);
+      padding:26px;
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .hero:before{
+      content:"";
+      position:absolute;inset:-80px -60px auto auto;
+      width:260px;height:260px;border-radius:50%;
+      background:radial-gradient(circle at 30% 30%, rgba(124,92,255,.35), transparent 55%);
+      filter: blur(2px);
+      pointer-events:none;
+    }
+    h1{
+      margin:0 0 10px;
+      font-size:36px;line-height:1.08;
+      letter-spacing:-.6px;
+    }
+    .sub{
+      margin:0 0 18px;
+      color:var(--muted);
+      font-size:15px;line-height:1.55;
+      max-width:58ch;
+    }
+
+    .pillrow{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0 18px}
+    .pill{
+      display:flex;align-items:center;gap:8px;
+      padding:10px 12px;border-radius:999px;
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.04);
+      color:var(--muted);font-size:13px;
+    }
+    .check{
+      width:18px;height:18px;border-radius:6px;
+      background:rgba(74,222,128,.14);
+      border:1px solid rgba(74,222,128,.35);
+      display:inline-flex;align-items:center;justify-content:center;
+      color:var(--accent2);font-weight:900;font-size:12px;
+    }
+
+    .ctaRow{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:14px}
+    .btn{
+      cursor:pointer;
+      border:1px solid transparent;
+      border-radius:14px;
+      padding:12px 14px;
+      font-weight:700;
+      letter-spacing:.2px;
+      display:inline-flex;align-items:center;gap:10px;
+      transition: transform .08s ease, background .2s ease, border-color .2s ease, opacity .2s ease;
+      user-select:none;
+    }
+    .btn:active{transform: translateY(1px)}
+    .btnPrimary{
+      background:linear-gradient(135deg,var(--accent),#5b3bff);
+      box-shadow: 0 14px 40px rgba(124,92,255,.25);
+    }
+    .btnPrimary:hover{opacity:.96}
+    .btnGhost{
+      background:rgba(255,255,255,.04);
+      border-color: var(--stroke);
+      color:var(--text);
+    }
+    .btnGhost:hover{background:rgba(255,255,255,.06)}
+    .fine{color:var(--muted);font-size:12px;line-height:1.4;margin-top:10px}
+
+    .card{
+      border:1px solid var(--stroke);
+      background:rgba(11,16,32,.55);
+      backdrop-filter: blur(10px);
+      border-radius: var(--radius);
+      padding:18px;
+      box-shadow: var(--shadow);
+    }
+    .card h3{margin:0 0 10px;font-size:16px}
+    .row{
+      display:flex;justify-content:space-between;align-items:center;
+      gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    .row:last-child{border-bottom:none}
+    .label{color:var(--muted);font-size:13px}
+    .value{font-weight:700}
+
+    .mini{
+      font-size:12px;color:var(--muted);margin-top:10px;line-height:1.45
+    }
+
+    .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+    @media (max-width: 520px){
+      .kpis{grid-template-columns:1fr}
+    }
+    .kpi{
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.04);
+      border-radius:14px;padding:12px;
+    }
+    .kpi .t{font-size:12px;color:var(--muted)}
+    .kpi .n{font-size:18px;font-weight:800;margin-top:4px}
+
+    .footer{
+      margin:18px 0 6px;color:var(--muted);font-size:12px;line-height:1.6;
+      display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;
+    }
+
+    .toast{
+      position:fixed;left:50%;bottom:18px;transform:translateX(-50%);
+      background:rgba(10,14,26,.92);
+      border:1px solid rgba(255,255,255,.14);
+      border-radius:14px;
+      padding:12px 14px;
+      color:var(--text);
+      box-shadow: var(--shadow);
+      width:min(720px, calc(100% - 24px));
+      display:none;
+    }
+    .toast .muted{color:var(--muted);font-size:12px;margin-top:4px}
+    .toast .bar{
+      height:2px;background:rgba(255,255,255,.08);
+      border-radius:999px;margin-top:10px;overflow:hidden;
+    }
+    .toast .bar > div{
+      height:100%;width:0%;
+      background:linear-gradient(90deg,var(--accent),var(--accent2));
+      border-radius:999px;
+      transition: width 2.2s linear;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <span class="dot"></span>
+        <span>StreamVault</span>
+        <span class="badge" id="partnerBadge" title="Source partenaire">Partner: —</span>
+      </div>
+      <div class="badge" id="secureBadge">🔒 Paiement sécurisé</div>
+    </div>
+
+    <div class="grid">
+      <section class="hero">
+        <h1>Paiement & activation en 2 minutes.</h1>
+        <p class="sub">
+          Finalisez votre abonnement via un checkout sécurisé. Une fois payé, vous recevrez vos instructions d’activation immédiatement.
+          Support WhatsApp disponible.
+        </p>
+
+        <div class="pillrow">
+          <div class="pill"><span class="check">✓</span> Activation instantanée</div>
+          <div class="pill"><span class="check">✓</span> Renouvellement simple</div>
+          <div class="pill"><span class="check">✓</span> Support WhatsApp</div>
+        </div>
+
+        <div class="ctaRow">
+          <button class="btn btnPrimary" id="payBtn">
+            Continuer vers le paiement
+            <span aria-hidden="true">→</span>
+          </button>
+
+          <a class="btn btnGhost" id="waBtn" href="#" rel="noopener">
+            WhatsApp Support
+            <span aria-hidden="true">💬</span>
+          </a>
+        </div>
+
+        <div class="fine">
+          En cliquant sur “Continuer”, vous serez redirigé vers notre page de paiement. Conservez votre WhatsApp ouvert pour recevoir l’activation.
+        </div>
+      </section>
+
+      <aside class="card">
+        <h3>Résumé</h3>
+
+        <div class="row">
+          <div class="label">Offre</div>
+          <div class="value" id="offerName">Pro Access</div>
+        </div>
+        <div class="row">
+          <div class="label">Prix</div>
+          <div class="value" id="offerPrice">—</div>
+        </div>
+        <div class="row">
+          <div class="label">Délai</div>
+          <div class="value">Instantané</div>
+        </div>
+
+        <div class="kpis">
+          <div class="kpi">
+            <div class="t">Activation</div>
+            <div class="n">2 min</div>
+          </div>
+          <div class="kpi">
+            <div class="t">Support</div>
+            <div class="n">WhatsApp</div>
+          </div>
+          <div class="kpi">
+            <div class="t">Accès</div>
+            <div class="n">24/7</div>
+          </div>
+        </div>
+
+        <p class="mini">
+          Astuce : si vous venez via un partenaire, assurez-vous que le code partenaire est affiché en haut (ex: <b>?p=atlas</b>).
+          Cela garantit la bonne attribution.
+        </p>
+      </aside>
+    </div>
+
+    <div class="footer">
+      <div>© <span id="year"></span> StreamVault. Tous droits réservés.</div>
+      <div style="opacity:.9">Besoin d’aide ? Cliquez “WhatsApp Support”.</div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">
+    <div><b>Redirection vers le paiement…</b></div>
+    <div class="muted">Si rien ne s’ouvre, autorisez les popups ou réessayez.</div>
+    <div class="bar"><div id="barFill"></div></div>
+  </div>
+
+  <script>
+    // =========================
+    // 1) CONFIG — change these
+    // =========================
+    const WHOP_CHECKOUT_URL = "https://whop.com/checkout/plan_bjy3o9ZScfqmY"; // <-- replace with your real checkout
+    const WHATSAPP_NUMBER = "212600000000"; // <-- replace (Morocco format without +)
+    const DEFAULT_PRICE_TEXT = "99 MAD / mois"; // <-- just display text (optional)
+
+    // =========================
+    // 2) Helper: read URL params
+    // =========================
+    const params = new URLSearchParams(location.search);
+    const partner = (params.get("p") || "").trim();     // partner code, e.g. ?p=atlas
+    const offer = (params.get("o") || "").trim();       // optional offer name, e.g. ?o=pro
+    const price = (params.get("price") || "").trim();   // optional display price
+
+    // Display partner badge
+    const partnerBadge = document.getElementById("partnerBadge");
+    partnerBadge.textContent = "Partner: " + (partner ? partner : "—");
+
+    // Offer name / price display (pure UI)
+    const offerName = document.getElementById("offerName");
+    const offerPrice = document.getElementById("offerPrice");
+    offerName.textContent = offer ? offer : "Pro Access";
+    offerPrice.textContent = price ? price : DEFAULT_PRICE_TEXT;
+
+    // WhatsApp support link (includes partner for context)
+    const waBtn = document.getElementById("waBtn");
+    const waText = encodeURIComponent(
+      `Salam, j'ai besoin d'aide pour l'activation.\n` +
+      `Partner: ${partner || "—"}\n` +
+      `Offre: ${offerName.textContent}\n` +
+      `Page: ${location.href}`
+    );
+    waBtn.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${waText}`;
+
+    // =========================
+    // 3) Payment redirect
+    // =========================
+    const payBtn = document.getElementById("payBtn");
+    const toast = document.getElementById("toast");
+    const barFill = document.getElementById("barFill");
+
+    function showToast(){
+      toast.style.display = "block";
+      // trigger bar animation
+      requestAnimationFrame(() => { barFill.style.width = "100%"; });
+      setTimeout(() => { toast.style.display = "none"; barFill.style.width = "0%"; }, 2600);
+    }
+
+    payBtn.addEventListener("click", () => {
+      showToast();
+
+      // Simple attribution: append partner code to checkout as query params (safe).
+      // Whop may ignore unknown params, but you still keep it in analytics (and can read in your own logs if you wrap later).
+      const u = new URL(WHOP_CHECKOUT_URL);
+      if (partner) u.searchParams.set("partner", partner);
+      if (offer) u.searchParams.set("offer", offer);
+
+      // Redirect
+      setTimeout(() => {
+        window.location.href = u.toString();
+      }, 450);
+    });
+
+    // Footer year
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
