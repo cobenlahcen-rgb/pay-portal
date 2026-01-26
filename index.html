@@ -1,579 +1,345 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<title>NextGen AI Hub — AI Business Agent Setup</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8" />
+  <title>NextGen AI Hub — Secure Checkout</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<!-- Whop Embedded Checkout Loader -->
-<script async defer src="https://js.whop.com/static/checkout/loader.js"></script>
+  <!-- Whop Embedded Checkout Loader -->
+  <script async defer src="https://js.whop.com/static/checkout/loader.js"></script>
 
-<style>
-:root{
-  --bg:#0a0a12;
-  --card:rgba(19,19,36,.92);
-  --accent:#7c5cff;
-  --accent2:#4ade80;
-  --text:#f4f4ff;
-  --muted:#a1a1c8;
-  --stroke:rgba(124,92,255,.25);
-}
-*{box-sizing:border-box;font-family:Inter,system-ui,Arial}
-body{
-  margin:0;
-  min-height:100vh;
-  background:
-    radial-gradient(900px 450px at 18% -8%,rgba(124,92,255,.25),transparent 60%),
-    radial-gradient(700px 380px at 85% 0%,rgba(74,222,128,.16),transparent 55%),
-    var(--bg);
-  color:var(--text);
-}
-.container{max-width:980px;margin:auto;padding:28px}
-.card{
-  background:var(--card);
-  border:1px solid rgba(255,255,255,.06);
-  border-radius:22px;
-  padding:28px;
-  box-shadow:0 30px 90px rgba(0,0,0,.62);
-  backdrop-filter: blur(10px);
-}
-h1{font-size:40px;margin:0 0 10px;letter-spacing:-.4px}
-h2{margin:0 0 10px;font-size:24px}
-p{color:var(--muted);margin:10px 0 0;line-height:1.45}
-.small{font-size:12px;color:var(--muted)}
-.hidden{display:none}
+  <style>
+    :root{
+      --bg:#0a0a12;
+      --card:rgba(19,19,36,.92);
+      --accent:#7c5cff;
+      --accent2:#4ade80;
+      --text:#f4f4ff;
+      --muted:#a1a1c8;
+    }
+    *{box-sizing:border-box;font-family:Inter,system-ui,Arial}
+    body{
+      margin:0;
+      min-height:100vh;
+      background:
+        radial-gradient(900px 450px at 18% -8%,rgba(124,92,255,.25),transparent 60%),
+        radial-gradient(700px 380px at 85% 0%,rgba(74,222,128,.16),transparent 55%),
+        var(--bg);
+      color:var(--text);
+    }
+    .container{max-width:980px;margin:auto;padding:28px}
+    .card{
+      background:var(--card);
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:22px;
+      padding:28px;
+      box-shadow:0 30px 90px rgba(0,0,0,.62);
+      backdrop-filter: blur(10px);
+    }
+    .toprow{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:8px 12px;border-radius:999px;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.06);
+      color:var(--muted);font-size:12px;
+    }
+    h1{font-size:40px;margin:14px 0 8px;letter-spacing:-.4px}
+    p{color:var(--muted);margin:8px 0 0;line-height:1.5}
+    .small{font-size:12px;color:var(--muted)}
+    .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px;align-items:center}
 
-.toprow{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.pill{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:8px 12px;border-radius:999px;
-  background:rgba(255,255,255,.04);
-  border:1px solid rgba(255,255,255,.06);
-  color:var(--muted);font-size:12px;
-}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;
+      gap:10px;
+      background:linear-gradient(135deg,var(--accent),rgba(124,92,255,.65));
+      border:none;
+      color:#fff;
+      padding:14px 22px;
+      border-radius:14px;
+      font-weight:900;
+      cursor:pointer;
+      text-decoration:none;
+      box-shadow:0 18px 40px rgba(124,92,255,.18);
+      transition:.15s transform,.15s filter;
+    }
+    .btn:hover{transform:translateY(-1px);filter:saturate(1.1)}
+    .btn:active{transform:translateY(0px)}
+    .btn.secondary{
+      background:transparent;
+      border:1px solid rgba(124,92,255,.45);
+      box-shadow:none;
+      color:var(--text);
+    }
 
-.btn{
-  display:inline-flex;align-items:center;justify-content:center;
-  gap:10px;
-  background:linear-gradient(135deg,var(--accent),rgba(124,92,255,.65));
-  border:none;
-  color:#fff;
-  padding:14px 22px;
-  border-radius:14px;
-  font-weight:900;
-  cursor:pointer;
-  text-decoration:none;
-  box-shadow:0 18px 40px rgba(124,92,255,.18);
-  transition:.15s transform,.15s filter;
-}
-.btn:hover{transform:translateY(-1px);filter:saturate(1.1)}
-.btn:active{transform:translateY(0px)}
-.btn.secondary{
-  background:transparent;
-  border:1px solid rgba(124,92,255,.45);
-  box-shadow:none;
-  color:var(--text);
-}
-.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px;align-items:center}
+    .planbox{
+      margin-top:16px;
+      padding:16px;
+      border-radius:18px;
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.07);
+    }
+    .planrow{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    .tag{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:6px 10px;border-radius:999px;
+      font-size:12px;
+      background:rgba(124,92,255,.14);
+      border:1px solid rgba(124,92,255,.22);
+      color:var(--text);
+      font-weight:800;
+    }
+    .big{
+      font-size:34px;font-weight:1000;margin:8px 0 2px;
+    }
+    ul{margin:10px 0 0;padding-left:18px;color:var(--muted)}
+    li{margin:6px 0}
 
-.progress{
-  height:8px;background:#222;border-radius:10px;overflow:hidden;margin:16px 0 14px;
-  border:1px solid rgba(255,255,255,.06)
-}
-.bar{
-  height:100%;width:0;
-  background:linear-gradient(90deg,var(--accent),var(--accent2));
-  transition:.25s ease;
-}
+    .footerNote{
+      margin-top:14px;
+      padding-top:12px;
+      border-top:1px solid rgba(255,255,255,.06);
+    }
 
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:14px}
-.choice{
-  padding:14px;
-  background:#17172b;
-  border:1px solid rgba(255,255,255,.06);
-  border-radius:14px;
-  cursor:pointer;
-  transition:.15s;
-}
-.choice:hover{background:#1e1e38}
+    /* =========================
+       Whop Modal — same size as your screenshot + internal scroll
+       ========================= */
+    .ng-modal{
+      position:fixed; inset:0;
+      display:none;
+      z-index:9999;
+    }
+    .ng-modal.is-open{display:block}
+    .ng-modal__backdrop{
+      position:absolute; inset:0;
+      background:rgba(0,0,0,.72);
+      backdrop-filter: blur(6px);
+    }
+    .ng-modal__panel{
+      position:relative;
+      width:min(980px, calc(100% - 16px));
+      height:min(86vh, 760px);
+      margin:8vh auto 0;
+      background:#0b0b0f;
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:16px;
+      box-shadow:0 30px 90px rgba(0,0,0,.65);
+      overflow:hidden;
+      display:flex; flex-direction:column;
+    }
+    .ng-modal__header{
+      padding:12px 14px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,0));
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+    }
+    .ng-modal__title{font-weight:1000;font-size:14px;letter-spacing:-.2px}
+    .ng-modal__subtitle{opacity:.75;font-size:12px;white-space:nowrap}
+    .ng-modal__close{
+      width:40px;height:40px;border-radius:12px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.06);
+      color:#fff;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;
+    }
+    .ng-modal__close:hover{ background:rgba(255,255,255,.10); }
 
-.summary{
-  margin-top:14px;
-  padding:14px;
-  border-radius:18px;
-  background:rgba(0,0,0,.22);
-  border:1px solid rgba(255,255,255,.07);
-}
-.summary .row{
-  display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;
-  padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06);
-}
-.summary .row:last-child{border-bottom:none}
-.k{color:var(--muted);font-size:12px}
-.v{color:var(--text);font-weight:800}
+    #whop-embedded-checkout{
+      flex:1;
+      min-height:0;
+      overflow:auto;
+      -webkit-overflow-scrolling: touch;
+      background:#fff;
+    }
+    #whop-embedded-checkout::-webkit-scrollbar{ width:10px; }
+    #whop-embedded-checkout::-webkit-scrollbar-thumb{
+      background: rgba(0,0,0,.18);
+      border-radius: 999px;
+    }
 
-.priceRow{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:14px}
-.plan{
-  padding:16px;border-radius:18px;
-  background:rgba(255,255,255,.03);
-  border:1px solid rgba(255,255,255,.07);
-}
-.plan .tag{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:6px 10px;border-radius:999px;
-  font-size:12px;
-  background:rgba(124,92,255,.14);
-  border:1px solid rgba(124,92,255,.22);
-  color:var(--text);
-}
-.plan .big{font-size:34px;font-weight:1000;margin:10px 0 2px}
-.plan ul{margin:10px 0 0;padding-left:18px;color:var(--muted)}
-.plan li{margin:6px 0}
+    .ng-modal__error{
+      position:absolute;
+      left:14px; right:14px; bottom:12px;
+      padding:10px 12px;
+      border-radius:12px;
+      background:rgba(255,0,0,.12);
+      border:1px solid rgba(255,0,0,.25);
+      font-size:13px;
+      color:rgba(255,255,255,.92);
+      display:none;
+    }
 
-.footerNote{
-  margin-top:14px;
-  padding-top:12px;
-  border-top:1px solid rgba(255,255,255,.06);
-}
+    /* Success card */
+    .success{
+      margin-top:16px;
+      padding:16px;
+      border-radius:18px;
+      background:rgba(74,222,128,.10);
+      border:1px solid rgba(74,222,128,.22);
+      display:none;
+    }
 
-/* =========================
-   Whop Modal — match screenshot size + clean scroll
-   ========================= */
-.ng-modal{
-  position:fixed; inset:0;
-  display:none;
-  z-index:9999;
-}
-.ng-modal.is-open{display:block}
-.ng-modal__backdrop{
-  position:absolute; inset:0;
-  background:rgba(0,0,0,.72);
-  backdrop-filter: blur(6px);
-}
-.ng-modal__panel{
-  position:relative;
-  width:min(980px, calc(100% - 16px)); /* screenshot-like width */
-  height:min(86vh, 760px);            /* screenshot-like height */
-  margin:8vh auto 0;                  /* top breathing room */
-  background:#0b0b0f;
-  border:1px solid rgba(255,255,255,.10);
-  border-radius:16px;
-  box-shadow:0 30px 90px rgba(0,0,0,.65);
-  overflow:hidden;
-  display:flex; flex-direction:column;
-}
-.ng-modal__header{
-  padding:12px 14px;
-  border-bottom:1px solid rgba(255,255,255,.08);
-  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,0));
-  display:flex; align-items:center; justify-content:space-between; gap:12px;
-}
-.ng-modal__title{font-weight:1000;font-size:14px;letter-spacing:-.2px}
-.ng-modal__subtitle{opacity:.75;font-size:12px;white-space:nowrap}
-.ng-modal__close{
-  width:40px;height:40px;border-radius:12px;
-  border:1px solid rgba(255,255,255,.10);
-  background:rgba(255,255,255,.06);
-  color:#fff;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-}
-.ng-modal__close:hover{ background:rgba(255,255,255,.10); }
-
-/* The important part: internal scroll area like your screenshot */
-#whop-embedded-checkout{
-  flex:1;
-  min-height:0;
-  overflow:auto;
-  -webkit-overflow-scrolling: touch;
-  background:#fff;
-}
-
-/* subtle scrollbar */
-#whop-embedded-checkout::-webkit-scrollbar{ width:10px; }
-#whop-embedded-checkout::-webkit-scrollbar-thumb{
-  background: rgba(0,0,0,.18);
-  border-radius: 999px;
-}
-
-.ng-modal__error{
-  position:absolute;
-  left:14px; right:14px; bottom:12px;
-  padding:10px 12px;
-  border-radius:12px;
-  background:rgba(255,0,0,.12);
-  border:1px solid rgba(255,0,0,.25);
-  font-size:13px;
-  color:rgba(255,255,255,.92);
-}
-
-@media (max-width: 640px){
-  .container{padding:18px}
-  .ng-modal__panel{
-    width: calc(100% - 12px);
-    height: 92vh;
-    margin: 4vh auto 0;
-    border-radius: 14px;
-  }
-  .ng-modal__subtitle{display:none;}
-}
-</style>
+    @media (max-width: 640px){
+      .container{padding:18px}
+      .ng-modal__panel{
+        width: calc(100% - 12px);
+        height: 92vh;
+        margin: 4vh auto 0;
+        border-radius: 14px;
+      }
+      .ng-modal__subtitle{display:none;}
+    }
+  </style>
 </head>
-
 <body>
-<div class="container">
 
-<!-- HERO -->
-<div id="hero" class="card">
-  <div class="toprow">
-    <div class="pill">NextGen AI Hub • AI Business Chat Agent</div>
-    <div class="pill">Safe • No therapy • No adult content</div>
-  </div>
-
-  <h1 style="margin-top:16px;">Build Your AI Business Agent</h1>
-  <p>Pick a use case. Answer 3 quick questions. Get a ready-to-launch AI agent setup in seconds.</p>
-
-  <div class="actions">
-    <button class="btn" onclick="go('usecases')">Create My Agent</button>
-    <button class="btn secondary" onclick="scrollToHow()">How it works</button>
-  </div>
-
-  <div id="how" class="footerNote">
-    <p class="small">⚡ 60-second setup • 🔒 Secure checkout by Whop • ✅ Works on mobile & desktop</p>
-  </div>
-</div>
-
-<!-- USE CASE -->
-<div id="usecases" class="card hidden">
-  <div class="progress"><div class="bar" style="width:20%"></div></div>
-  <h2>Choose your use case</h2>
-  <p class="small">This helps us generate the best default behavior for your agent.</p>
-
-  <div class="grid">
-    <div class="choice" onclick="pickUseCase('Lead capture & qualification')">
-      <b>Lead capture & qualification</b><br>
-      <span class="small">Turn chats into booked calls & qualified leads.</span>
-    </div>
-    <div class="choice" onclick="pickUseCase('Customer support (FAQ)')">
-      <b>Customer support (FAQ)</b><br>
-      <span class="small">Instant answers, order status, and escalation.</span>
-    </div>
-    <div class="choice" onclick="pickUseCase('Appointments & bookings')">
-      <b>Appointments & bookings</b><br>
-      <span class="small">Collect info, schedule, confirm, and remind.</span>
-    </div>
-    <div class="choice" onclick="pickUseCase('Sales assistant')">
-      <b>Sales assistant</b><br>
-      <span class="small">Recommend offers, handle objections, close.</span>
-    </div>
-  </div>
-
-  <div class="actions">
-    <button class="btn secondary" onclick="go('hero')">Back</button>
-  </div>
-</div>
-
-<!-- QUIZ -->
-<div id="quiz" class="card hidden">
-  <div class="progress"><div id="bar" class="bar"></div></div>
-  <h2 id="q"></h2>
-  <div id="opts"></div>
-  <div class="actions">
-    <button class="btn secondary" onclick="go('usecases')">Back</button>
-  </div>
-</div>
-
-<!-- LOADING -->
-<div id="loading" class="card hidden">
-  <h2>Generating your agent setup…</h2>
-  <p>Creating your default tone, flow, and responses</p>
-  <div class="progress" style="margin-top:16px;"><div id="loadbar" class="bar" style="width:0%"></div></div>
-  <p class="small" id="loadtxt" style="margin-top:10px;">Preparing your starter script…</p>
-</div>
-
-<!-- RESULT -->
-<div id="result" class="card hidden">
-  <h2>Your AI agent setup is ready</h2>
-  <p class="small">Here’s what will be used as your initial behavior (you can edit later).</p>
-
-  <div class="summary">
-    <div class="row"><div class="k">Use case</div><div class="v" id="rUseCase">—</div></div>
-    <div class="row"><div class="k">Audience</div><div class="v" id="rAudience">—</div></div>
-    <div class="row"><div class="k">Tone</div><div class="v" id="rTone">—</div></div>
-    <div class="row"><div class="k">Reply length</div><div class="v" id="rLength">—</div></div>
-  </div>
-
-  <div class="actions">
-    <button class="btn secondary" onclick="go('usecases')">Change use case</button>
-    <button class="btn" onclick="go('price')">Continue</button>
-  </div>
-
-  <p class="small" style="margin-top:10px;">Most teams start the trial immediately to lock in the setup.</p>
-</div>
-
-<!-- PRICE -->
-<div id="price" class="card hidden">
-  <div class="toprow">
-    <div class="pill">7-day free trial included</div>
-    <div class="pill">Cancel anytime</div>
-  </div>
-
-  <h2 style="margin-top:14px;">Launch your agent</h2>
-  <p class="small">Start free today. After 7 days: $19/month. No charge now.</p>
-
-  <div class="priceRow">
-    <div class="plan">
-      <div class="tag">Best for getting results fast</div>
-      <div class="big">$0 today</div>
-      <div class="small">Then $19 / month after 7 days</div>
-      <ul>
-        <li>Unlimited safe conversations</li>
-        <li>Lead capture / support / booking flows</li>
-        <li>Cancel anytime during trial</li>
-        <li>Secure checkout handled by Whop</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="actions" style="margin-top:18px;">
-    <button class="btn" onclick="openWhopModal()">Start Free Trial & Launch</button>
-    <button class="btn secondary" onclick="go('result')">Back</button>
-  </div>
-
-  <p class="small" style="margin-top:10px;">
-    $0 today · No card charged until trial ends · Secure checkout by Whop
-  </p>
-</div>
-
-<!-- SUCCESS -->
-<div id="success" class="card hidden">
-  <div class="toprow">
-    <div class="pill">Trial active</div>
-    <div class="pill">Cancel anytime</div>
-  </div>
-
-  <h2 style="margin-top:14px;">✅ You’re set</h2>
-  <p class="small">Trial is active. Next step: connect your agent to your channel (WhatsApp / web chat) and go live.</p>
-
-  <div class="footerNote">
-    <p class="small" style="margin:0;">
-      Receipt: <span id="receiptIdText">Confirmed</span>
-    </p>
-  </div>
-
-  <div class="actions" style="margin-top:18px;">
-    <button class="btn" onclick="go('hero')">Back to start</button>
-    <button class="btn secondary" onclick="go('result')">View setup</button>
-  </div>
-</div>
-
-</div>
-
-<!-- Whop Checkout Modal -->
-<div id="whopModal" class="ng-modal" aria-hidden="true">
-  <div class="ng-modal__backdrop" onclick="closeWhopModal()"></div>
-
-  <div class="ng-modal__panel" role="dialog" aria-modal="true" aria-label="Checkout">
-    <div class="ng-modal__header">
-      <div>
-        <div class="ng-modal__title">Secure Checkout</div>
-        <div class="ng-modal__subtitle">7 days free · Cancel anytime</div>
+  <div class="container">
+    <div class="card">
+      <div class="toprow">
+        <div class="pill">NextGen AI Hub • Secure Checkout</div>
+        <div class="pill">7-day free trial • Cancel anytime</div>
       </div>
-      <button class="ng-modal__close" onclick="closeWhopModal()" aria-label="Close checkout">✕</button>
-    </div>
 
-    <div
-      id="whop-embedded-checkout"
-      data-whop-checkout-plan-id="plan_bjy3o9ZScfqmY"
-      data-whop-checkout-return-url="https://nextgenaihub.net/?whop_return=1"
-      data-whop-checkout-on-complete="onCheckoutComplete"
-      data-whop-checkout-on-state-change="onCheckoutStateChange"
-    ></div>
+      <h1>Activate Your Subscription</h1>
+      <p>Start with <b>$0 today</b>. Your trial begins immediately, and you can cancel anytime before the trial ends.</p>
 
-    <div id="whopError" class="ng-modal__error" style="display:none;">
-      Checkout didn’t complete. Please try again.
+      <div class="planbox">
+        <div class="planrow">
+          <div>
+            <div class="tag">Free Trial</div>
+            <div class="big">$0 today</div>
+            <div class="small">Then $19/month after 7 days</div>
+          </div>
+          <div class="small" style="max-width:320px">
+            Secure payment is handled by Whop (merchant of record). We do not store card details.
+          </div>
+        </div>
+
+        <ul>
+          <li>7-day free trial</li>
+          <li>Cancel anytime during trial</li>
+          <li>Instant access after checkout</li>
+        </ul>
+
+        <div class="actions">
+          <button class="btn" onclick="openWhopModal()">Start Free Trial & Subscribe</button>
+          <button class="btn secondary" onclick="window.location.href='https://nextgenaihub.net/'">Back</button>
+        </div>
+
+        <div class="footerNote">
+          <p class="small">$0 today · No card charged until trial ends · Secure checkout by Whop</p>
+        </div>
+      </div>
+
+      <div id="successBox" class="success">
+        <b>✅ Payment confirmed</b>
+        <div class="small" style="margin-top:6px;">
+          Receipt: <span id="receiptIdText">Confirmed</span>
+        </div>
+      </div>
     </div>
   </div>
-</div>
 
-<script>
-/** CONFIG */
-const WHOP_PLAN_ID = "plan_bjy3o9ZScfqmY";
-const RETURN_URL = "https://nextgenaihub.net/?whop_return=1";
+  <!-- Whop Checkout Modal -->
+  <div id="whopModal" class="ng-modal" aria-hidden="true">
+    <div class="ng-modal__backdrop" onclick="closeWhopModal()"></div>
 
-let step = 0;
-let firstUsecaseVisit = true;
-let useCase = "";
-const answers = [];
+    <div class="ng-modal__panel" role="dialog" aria-modal="true" aria-label="Checkout">
+      <div class="ng-modal__header">
+        <div>
+          <div class="ng-modal__title">Secure Checkout</div>
+          <div class="ng-modal__subtitle">7 days free · Cancel anytime</div>
+        </div>
+        <button class="ng-modal__close" onclick="closeWhopModal()" aria-label="Close checkout">✕</button>
+      </div>
 
-/** Quiz (business-safe) */
-const qs = [
-  ["Who is your main audience?", ["Local customers", "Online leads", "Existing clients", "Mixed"]],
-  ["Choose your agent tone", ["Professional", "Friendly", "Direct", "Premium"]],
-  ["Reply length", ["Short", "Balanced", "Detailed"]],
-];
+      <div
+        id="whop-embedded-checkout"
+        data-whop-checkout-plan-id="plan_bjy3o9ZScfqmY"
+        data-whop-checkout-return-url="https://nextgenaihub.net/?whop_return=1"
+        data-whop-checkout-on-complete="onCheckoutComplete"
+        data-whop-checkout-on-state-change="onCheckoutStateChange"
+      ></div>
 
-function scrollToHow(){
-  document.getElementById('how').scrollIntoView({behavior:'smooth',block:'start'});
-}
+      <div id="whopError" class="ng-modal__error">
+        Checkout didn’t complete. Please try again.
+      </div>
+    </div>
+  </div>
 
-function go(id){
-  document.querySelectorAll('.card').forEach(c => c.classList.add('hidden'));
-  document.getElementById(id).classList.remove('hidden');
+  <script>
+    const WHOP_PLAN_ID = "plan_bjy3o9ZScfqmY";
+    const RETURN_URL = "https://nextgenaihub.net/?whop_return=1";
 
-  if(id === 'usecases' && firstUsecaseVisit){
-    firstUsecaseVisit = false;
-  }
+    function openWhopModal(){
+      const modal = document.getElementById("whopModal");
+      const checkout = document.getElementById("whop-embedded-checkout");
+      const err = document.getElementById("whopError");
+      if (err) err.style.display = "none";
 
-  if(id === 'usecases'){
-    step = 0;
-    answers.length = 0;
-    const b = document.getElementById('bar');
-    if(b) b.style.width = '0%';
-  }
-}
+      checkout.setAttribute("data-whop-checkout-plan-id", WHOP_PLAN_ID);
+      checkout.setAttribute("data-whop-checkout-return-url", RETURN_URL);
 
-function pickUseCase(v){
-  useCase = v;
-  setTimeout(() => { go('quiz'); render(); }, 160);
-}
+      modal.classList.add("is-open");
+      modal.setAttribute("aria-hidden", "false");
 
-function render(){
-  const b = document.getElementById('bar');
-  if(b) b.style.width = ((step+1)/qs.length*100) + '%';
-
-  document.getElementById('q').innerText = qs[step][0];
-
-  let o = document.getElementById('opts');
-  o.innerHTML = '';
-
-  qs[step][1].forEach(v => {
-    let d = document.createElement('div');
-    d.className = 'choice';
-    d.innerText = v;
-    d.onclick = () => next(v);
-    o.appendChild(d);
-  });
-}
-
-function next(choice){
-  answers.push(choice);
-  step++;
-
-  if(step < qs.length){
-    render();
-    return;
-  }
-
-  go('loading');
-  const loadbar = document.getElementById('loadbar');
-  const loadtxt = document.getElementById('loadtxt');
-
-  let pct = 0;
-  const msgs = [
-    "Preparing your starter script…",
-    "Building your flow…",
-    "Finalizing agent rules…",
-    "Ready."
-  ];
-
-  const timer = setInterval(() => {
-    pct += Math.floor(Math.random()*16) + 10;
-    if(pct > 100) pct = 100;
-    if(loadbar) loadbar.style.width = pct + "%";
-    if(loadtxt){
-      const idx = Math.min(msgs.length-1, Math.floor(pct/34));
-      loadtxt.innerText = msgs[idx];
+      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
     }
-    if(pct >= 100){
-      clearInterval(timer);
-      setTimeout(() => showResult(), 220);
+
+    function closeWhopModal(){
+      const modal = document.getElementById("whopModal");
+      modal.classList.remove("is-open");
+      modal.setAttribute("aria-hidden", "true");
+
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
     }
-  }, 170);
-}
 
-function showResult(){
-  go('result');
+    // Whop callbacks
+    window.onCheckoutComplete = (planId, receiptId) => {
+      closeWhopModal();
 
-  const [audience, tone, length] = answers;
+      localStorage.setItem("ng_paid", "true");
+      localStorage.setItem("ng_whop_plan_id", planId || "");
+      localStorage.setItem("ng_whop_receipt_id", receiptId || "");
 
-  document.getElementById("rUseCase").innerText = useCase || "—";
-  document.getElementById("rAudience").innerText = audience || "—";
-  document.getElementById("rTone").innerText = tone || "—";
-  document.getElementById("rLength").innerText = length || "—";
-}
+      const receiptEl = document.getElementById("receiptIdText");
+      if (receiptEl) receiptEl.textContent = receiptId ? receiptId : "Confirmed";
 
-/* Whop modal controls (unchanged behavior) */
-function openWhopModal(){
-  const modal = document.getElementById("whopModal");
-  const checkout = document.getElementById("whop-embedded-checkout");
-  const err = document.getElementById("whopError");
-  if (err) err.style.display = "none";
+      const box = document.getElementById("successBox");
+      if (box) box.style.display = "block";
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+    };
 
-  checkout.setAttribute("data-whop-checkout-plan-id", WHOP_PLAN_ID);
-  checkout.setAttribute("data-whop-checkout-return-url", RETURN_URL);
+    window.onCheckoutStateChange = (state) => {
+      // console.log("Whop state:", state);
+    };
 
-  modal.classList.add("is-open");
-  modal.setAttribute("aria-hidden", "false");
+    // Return URL handler (optional safety)
+    (function handleWhopReturn(){
+      const url = new URL(window.location.href);
+      const whopReturn = url.searchParams.get("whop_return");
+      const status = url.searchParams.get("status");
 
-  document.body.style.overflow = "hidden";
-  document.documentElement.style.overflow = "hidden";
-}
+      if (!whopReturn) return;
 
-function closeWhopModal(){
-  const modal = document.getElementById("whopModal");
-  modal.classList.remove("is-open");
-  modal.setAttribute("aria-hidden", "true");
+      url.searchParams.delete("whop_return");
+      url.searchParams.delete("status");
+      window.history.replaceState({}, "", url.toString());
 
-  document.body.style.overflow = "";
-  document.documentElement.style.overflow = "";
-}
-
-/* Whop callbacks */
-window.onCheckoutComplete = (planId, receiptId) => {
-  closeWhopModal();
-
-  localStorage.setItem("ng_paid", "true");
-  localStorage.setItem("ng_whop_plan_id", planId || "");
-  localStorage.setItem("ng_whop_receipt_id", receiptId || "");
-
-  const receiptEl = document.getElementById("receiptIdText");
-  if (receiptEl) receiptEl.textContent = receiptId ? receiptId : "Confirmed";
-
-  go("success");
-};
-
-window.onCheckoutStateChange = (state) => {
-  // console.log("Whop checkout state:", state);
-};
-
-/* Return URL handler */
-(function handleWhopReturn(){
-  const url = new URL(window.location.href);
-  const whopReturn = url.searchParams.get("whop_return");
-  const status = url.searchParams.get("status");
-
-  if (!whopReturn) return;
-
-  url.searchParams.delete("whop_return");
-  url.searchParams.delete("status");
-  window.history.replaceState({}, "", url.toString());
-
-  if (status === "success") {
-    localStorage.setItem("ng_paid", "true");
-    const receiptEl = document.getElementById("receiptIdText");
-    if (receiptEl) receiptEl.textContent = localStorage.getItem("ng_whop_receipt_id") || "Confirmed";
-    go("success");
-  } else {
-    go("price");
-    const err = document.getElementById("whopError");
-    if (err) err.style.display = "block";
-    openWhopModal();
-  }
-})();
-
-/* Start */
-go('hero');
-</script>
+      if (status === "success") {
+        const receiptEl = document.getElementById("receiptIdText");
+        if (receiptEl) receiptEl.textContent = localStorage.getItem("ng_whop_receipt_id") || "Confirmed";
+        const box = document.getElementById("successBox");
+        if (box) box.style.display = "block";
+      } else {
+        const err = document.getElementById("whopError");
+        if (err) err.style.display = "block";
+        openWhopModal();
+      }
+    })();
+  </script>
 
 </body>
 </html>
