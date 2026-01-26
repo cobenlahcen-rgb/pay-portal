@@ -23,9 +23,10 @@
         radial-gradient(700px 380px at 85% 0%,rgba(74,222,128,.16),transparent 55%),
         var(--bg);
       color:var(--text);
-      overflow:hidden;
+      overflow:hidden; /* prevent background scroll */
     }
 
+    /* Optional tiny re-open button (only appears if user closes modal) */
     .reopen{
       position:fixed;
       left:50%;
@@ -43,6 +44,9 @@
     }
     .reopen small{display:block;color:var(--muted);font-weight:600;margin-top:4px}
 
+    /* =========================
+       Modal — internal scroll
+       ========================= */
     .ng-modal{
       position:fixed; inset:0;
       display:none;
@@ -77,8 +81,16 @@
       display:flex; align-items:center; justify-content:space-between; gap:12px;
     }
 
-    .ng-modal__title{font-weight:1000;font-size:14px}
-    .ng-modal__subtitle{opacity:.75;font-size:12px}
+    .ng-modal__title{
+      font-weight:1000;
+      font-size:14px;
+      letter-spacing:-.2px;
+    }
+    .ng-modal__subtitle{
+      opacity:.75;
+      font-size:12px;
+      white-space:nowrap;
+    }
 
     .ng-modal__close{
       width:40px;height:40px;border-radius:12px;
@@ -87,11 +99,21 @@
       color:#fff;cursor:pointer;
       display:flex;align-items:center;justify-content:center;
     }
+    .ng-modal__close:hover{ background:rgba(255,255,255,.10); }
 
+    /* Checkout iframe container: scroll INSIDE */
     #whop-embedded-checkout{
       flex:1;
+      min-height:0;
       overflow:auto;
+      -webkit-overflow-scrolling: touch;
       background:#fff;
+    }
+
+    #whop-embedded-checkout::-webkit-scrollbar{ width:10px; }
+    #whop-embedded-checkout::-webkit-scrollbar-thumb{
+      background: rgba(0,0,0,.18);
+      border-radius: 999px;
     }
 
     .ng-modal__error{
@@ -102,71 +124,110 @@
       background:rgba(255,0,0,.12);
       border:1px solid rgba(255,0,0,.25);
       font-size:13px;
+      color:rgba(255,255,255,.92);
       display:none;
+    }
+
+    @media (max-width: 640px){
+      .ng-modal__panel{
+        width: calc(100% - 12px);
+        height: 92vh;
+        margin: 4vh auto 0;
+        border-radius: 14px;
+      }
+      .ng-modal__subtitle{display:none;}
     }
   </style>
 </head>
 
 <body>
 
-<div id="whopModal" class="ng-modal">
-  <div class="ng-modal__backdrop" onclick="closeWhopModal()"></div>
+  <!-- Modal -->
+  <div id="whopModal" class="ng-modal" aria-hidden="true">
+    <div class="ng-modal__backdrop" onclick="closeWhopModal()"></div>
 
-  <div class="ng-modal__panel">
-    <div class="ng-modal__header">
-      <div>
-        <div class="ng-modal__title">NextGenPay — Secure Checkout</div>
-        <div class="ng-modal__subtitle">Paiement sécurisé · Support WhatsApp</div>
+    <div class="ng-modal__panel" role="dialog" aria-modal="true" aria-label="Checkout">
+      <div class="ng-modal__header">
+        <div>
+          <div class="ng-modal__title">NextGenPay — Secure Checkout</div>
+          <div class="ng-modal__subtitle">Paiement sécurisé · Support WhatsApp</div>
+        </div>
+        <button class="ng-modal__close" onclick="closeWhopModal()" aria-label="Close checkout">✕</button>
       </div>
-      <button class="ng-modal__close" onclick="closeWhopModal()">✕</button>
-    </div>
 
-    <div
-      id="whop-embedded-checkout"
-      data-whop-checkout-plan-id="plan_bjy3o9ZScfqmY"
-      data-whop-checkout-return-url="https://nextgenaihub.net/?whop_return=1"
-      data-whop-checkout-on-complete="onCheckoutComplete"
-    ></div>
+      <div
+        id="whop-embedded-checkout"
+        data-whop-checkout-plan-id="plan_bjy3o9ZScfqmY"
+        data-whop-checkout-return-url="https://pay.nextgenaihub.net/redirect.html?seller=chakir"
+        data-whop-checkout-on-complete="onCheckoutComplete"
+        data-whop-checkout-on-state-change="onCheckoutStateChange"
+      ></div>
 
-    <div id="whopError" class="ng-modal__error">
-      Checkout didn’t complete. Please try again.
+      <div id="whopError" class="ng-modal__error">
+        Checkout didn’t complete. Please try again.
+      </div>
     </div>
   </div>
-</div>
 
-<button id="reopenBtn" class="reopen" onclick="openWhopModal()">
-  Re-open Checkout
-  <small>If you closed it by mistake</small>
-</button>
+  <!-- Optional: only shows if user closes modal -->
+  <button id="reopenBtn" class="reopen" onclick="openWhopModal()">
+    Re-open Checkout
+    <small>If you closed it by mistake</small>
+  </button>
 
 <script>
-const WHOP_PLAN_ID = "plan_bjy3o9ZScfqmY";
-const RETURN_URL = "https://nextgenaihub.net/?whop_return=1";
+  const WHOP_PLAN_ID = "plan_bjy3o9ZScfqmY";
 
-function openWhopModal(){
-  const modal = document.getElementById("whopModal");
-  const checkout = document.getElementById("whop-embedded-checkout");
-  const reopen = document.getElementById("reopenBtn");
+  // IMPORTANT: return to our redirect page so WhatsApp opens after payment
+  const RETURN_URL = "https://pay.nextgenaihub.net/redirect.html?seller=chakir";
 
-  reopen.style.display = "none";
-  checkout.setAttribute("data-whop-checkout-plan-id", WHOP_PLAN_ID);
-  checkout.setAttribute("data-whop-checkout-return-url", RETURN_URL);
+  function openWhopModal(){
+    const modal = document.getElementById("whopModal");
+    const checkout = document.getElementById("whop-embedded-checkout");
+    const err = document.getElementById("whopError");
+    const reopen = document.getElementById("reopenBtn");
 
-  modal.classList.add("is-open");
-}
+    if (err) err.style.display = "none";
+    if (reopen) reopen.style.display = "none";
 
-function closeWhopModal(){
-  const modal = document.getElementById("whopModal");
-  const reopen = document.getElementById("reopenBtn");
-  modal.classList.remove("is-open");
-  reopen.style.display = "block";
-}
+    checkout.setAttribute("data-whop-checkout-plan-id", WHOP_PLAN_ID);
+    checkout.setAttribute("data-whop-checkout-return-url", RETURN_URL);
 
-window.onCheckoutComplete = () => {
-  closeWhopModal();
-};
+    modal.classList.add("is-open");
+    modal.setAttribute("aria-hidden", "false");
+  }
 
-window.addEventListener("load", openWhopModal);
+  function closeWhopModal(){
+    const modal = document.getElementById("whopModal");
+    const reopen = document.getElementById("reopenBtn");
+
+    modal.classList.remove("is-open");
+    modal.setAttribute("aria-hidden", "true");
+
+    // Optional re-open button
+    if (reopen) reopen.style.display = "block";
+  }
+
+  // ESC to close
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeWhopModal();
+  });
+
+  // Whop callbacks
+  window.onCheckoutComplete = (planId, receiptId) => {
+    // If Whop doesn't auto-redirect for any reason, we force it.
+    // (Keeps the flow consistent.)
+    window.location.href = RETURN_URL;
+  };
+
+  window.onCheckoutStateChange = (state) => {
+    // console.log("Whop state:", state);
+  };
+
+  // Auto-open on load
+  window.addEventListener("load", () => {
+    openWhopModal();
+  });
 </script>
 
 </body>
