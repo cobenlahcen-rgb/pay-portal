@@ -1,195 +1,66 @@
-<!doctype html>
-<html lang="fr">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>StreamVault — Paiement sécurisé & activation</title>
-  <meta name="description" content="Paiement sécurisé. Activation instantanée. Support WhatsApp.">
-  <meta name="theme-color" content="#0b0f1f"/>
+  <meta charset="UTF-8" />
+  <title>Secure Checkout — NextGen AI Hub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- Whop Embedded Checkout Loader -->
   <script async defer src="https://js.whop.com/static/checkout/loader.js"></script>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
   <style>
     :root{
-      --bg:#070a14;
-      --card: rgba(255,255,255,.06);
-      --stroke: rgba(255,255,255,.12);
-      --text:#eef0ff;
-      --muted:#a7acc7;
-      --accent:#7c5cff;
-      --accent2:#4ade80;
-      --shadow: 0 18px 60px rgba(0,0,0,.45);
-      --radius: 18px;
-      --danger:#ff4d6d;
+      --bg:#0a0a12;
+      --text:#f4f4ff;
+      --muted:#a1a1c8;
     }
-    *{box-sizing:border-box}
-    html,body{height:100%}
+    *{box-sizing:border-box;font-family:Inter,system-ui,Arial}
     body{
       margin:0;
-      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;
-      color:var(--text);
+      min-height:100vh;
       background:
-        radial-gradient(1000px 500px at 20% -10%, rgba(124,92,255,.30), transparent 60%),
-        radial-gradient(900px 500px at 90% 10%, rgba(74,222,128,.22), transparent 55%),
-        radial-gradient(900px 600px at 30% 110%, rgba(124,92,255,.20), transparent 60%),
+        radial-gradient(900px 450px at 18% -8%,rgba(124,92,255,.25),transparent 60%),
+        radial-gradient(700px 380px at 85% 0%,rgba(74,222,128,.16),transparent 55%),
         var(--bg);
-    }
-    a{color:inherit;text-decoration:none}
-    .wrap{max-width:1100px;margin:0 auto;padding:22px}
-
-    .topbar{
-      display:flex;align-items:center;justify-content:space-between;gap:12px;
-      padding:14px 18px;border:1px solid var(--stroke);
-      background:rgba(11,16,32,.55);
-      backdrop-filter: blur(10px);
-      border-radius:16px;
-    }
-    .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.2px}
-    .dot{
-      width:12px;height:12px;border-radius:999px;
-      background:linear-gradient(135deg,var(--accent),var(--accent2));
-      box-shadow:0 0 0 6px rgba(124,92,255,.14);
-    }
-    .badge{
-      font-size:12px;color:var(--muted);
-      border:1px solid var(--stroke);
-      padding:6px 10px;border-radius:999px;
-      background:rgba(255,255,255,.04);
-      white-space:nowrap;
-    }
-
-    .grid{
-      margin-top:18px;
-      display:grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap:18px;
-    }
-    @media (max-width: 900px){ .grid{grid-template-columns:1fr} }
-
-    .hero,.side{
-      border:1px solid var(--stroke);
-      background:rgba(11,16,32,.55);
-      backdrop-filter: blur(10px);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-    }
-    .hero{padding:26px;position:relative;overflow:hidden}
-    .hero:before{
-      content:"";
-      position:absolute;inset:-80px -60px auto auto;
-      width:260px;height:260px;border-radius:50%;
-      background:radial-gradient(circle at 30% 30%, rgba(124,92,255,.35), transparent 55%);
-      pointer-events:none;
-    }
-    h1{
-      margin:0 0 10px;
-      font-size:36px;line-height:1.08;
-      letter-spacing:-.6px;
-    }
-    .sub{
-      margin:0 0 18px;
-      color:var(--muted);
-      font-size:15px;line-height:1.55;
-      max-width:60ch;
-    }
-
-    .pillrow{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0 18px}
-    .pill{
-      display:flex;align-items:center;gap:8px;
-      padding:10px 12px;border-radius:999px;
-      border:1px solid var(--stroke);
-      background:rgba(255,255,255,.04);
-      color:var(--muted);font-size:13px;
-    }
-    .check{
-      width:18px;height:18px;border-radius:6px;
-      background:rgba(74,222,128,.14);
-      border:1px solid rgba(74,222,128,.35);
-      display:inline-flex;align-items:center;justify-content:center;
-      color:var(--accent2);font-weight:900;font-size:12px;
-    }
-
-    .ctaRow{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:14px}
-    .btn{
-      cursor:pointer;
-      border:1px solid transparent;
-      border-radius:14px;
-      padding:12px 14px;
-      font-weight:800;
-      letter-spacing:.2px;
-      display:inline-flex;align-items:center;gap:10px;
-      transition: transform .08s ease, background .2s ease, border-color .2s ease, opacity .2s ease;
-      user-select:none;
-    }
-    .btn:active{transform: translateY(1px)}
-    .btnPrimary{
-      background:linear-gradient(135deg,var(--accent),#5b3bff);
-      box-shadow: 0 14px 40px rgba(124,92,255,.25);
-      color:#fff;
-    }
-    .btnPrimary:hover{opacity:.96}
-    .btnGhost{
-      background:rgba(255,255,255,.04);
-      border-color: var(--stroke);
       color:var(--text);
+      overflow:hidden; /* prevent background scroll */
     }
-    .btnGhost:hover{background:rgba(255,255,255,.06)}
-    .fine{color:var(--muted);font-size:12px;line-height:1.4;margin-top:10px}
 
-    .side{padding:18px}
-    .side h3{margin:0 0 10px;font-size:16px}
-    .row{
-      display:flex;justify-content:space-between;align-items:center;
-      gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.08);
-    }
-    .row:last-child{border-bottom:none}
-    .label{color:var(--muted);font-size:13px}
-    .value{font-weight:800}
-    .mini{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.45}
-
-    .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
-    @media (max-width: 520px){ .kpis{grid-template-columns:1fr} }
-    .kpi{
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(255,255,255,.04);
-      border-radius:14px;padding:12px;
-    }
-    .kpi .t{font-size:12px;color:var(--muted)}
-    .kpi .n{font-size:18px;font-weight:900;margin-top:4px}
-
-    .success{
-      margin-top:16px;
-      padding:16px;
-      border-radius:18px;
-      background:rgba(74,222,128,.10);
-      border:1px solid rgba(74,222,128,.22);
+    /* Optional tiny re-open button (only appears if user closes modal) */
+    .reopen{
+      position:fixed;
+      left:50%;
+      top:50%;
+      transform:translate(-50%,-50%);
       display:none;
+      padding:12px 16px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      cursor:pointer;
+      font-weight:900;
+      box-shadow:0 30px 90px rgba(0,0,0,.62);
     }
-    .success .small{color:rgba(255,255,255,.78);font-size:12px;margin-top:6px}
+    .reopen small{display:block;color:var(--muted);font-weight:600;margin-top:4px}
 
-    .footer{
-      margin:18px 0 6px;color:var(--muted);font-size:12px;line-height:1.6;
-      display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;
-    }
-
-    /* ===== Modal (Whop embedded checkout) ===== */
-    .modal{
+    /* =========================
+       Modal — match your screenshot + internal scroll
+       ========================= */
+    .ng-modal{
       position:fixed; inset:0;
       display:none;
       z-index:9999;
     }
-    .modal.is-open{display:block}
-    .modal__backdrop{
+    .ng-modal.is-open{display:block}
+
+    .ng-modal__backdrop{
       position:absolute; inset:0;
       background:rgba(0,0,0,.72);
       backdrop-filter: blur(6px);
     }
-    .modal__panel{
+
+    .ng-modal__panel{
       position:relative;
       width:min(980px, calc(100% - 16px));
       height:min(86vh, 760px);
@@ -199,25 +70,38 @@
       border-radius:16px;
       box-shadow:0 30px 90px rgba(0,0,0,.65);
       overflow:hidden;
-      display:flex; flex-direction:column;
+      display:flex;
+      flex-direction:column;
     }
-    .modal__header{
+
+    .ng-modal__header{
       padding:12px 14px;
       border-bottom:1px solid rgba(255,255,255,.08);
       background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,0));
       display:flex; align-items:center; justify-content:space-between; gap:12px;
     }
-    .modal__title{font-weight:1000;font-size:14px;letter-spacing:-.2px}
-    .modal__subtitle{opacity:.75;font-size:12px;white-space:nowrap}
-    .modal__close{
+
+    .ng-modal__title{
+      font-weight:1000;
+      font-size:14px;
+      letter-spacing:-.2px;
+    }
+    .ng-modal__subtitle{
+      opacity:.75;
+      font-size:12px;
+      white-space:nowrap;
+    }
+
+    .ng-modal__close{
       width:40px;height:40px;border-radius:12px;
       border:1px solid rgba(255,255,255,.10);
       background:rgba(255,255,255,.06);
       color:#fff;cursor:pointer;
       display:flex;align-items:center;justify-content:center;
     }
-    .modal__close:hover{ background:rgba(255,255,255,.10); }
+    .ng-modal__close:hover{ background:rgba(255,255,255,.10); }
 
+    /* Checkout iframe container: scroll INSIDE like screenshot */
     #whop-embedded-checkout{
       flex:1;
       min-height:0;
@@ -226,7 +110,13 @@
       background:#fff;
     }
 
-    .modal__error{
+    #whop-embedded-checkout::-webkit-scrollbar{ width:10px; }
+    #whop-embedded-checkout::-webkit-scrollbar-thumb{
+      background: rgba(0,0,0,.18);
+      border-radius: 999px;
+    }
+
+    .ng-modal__error{
       position:absolute;
       left:14px; right:14px; bottom:12px;
       padding:10px 12px;
@@ -239,275 +129,124 @@
     }
 
     @media (max-width: 640px){
-      .wrap{padding:18px}
-      .modal__panel{
+      .ng-modal__panel{
         width: calc(100% - 12px);
         height: 92vh;
         margin: 4vh auto 0;
         border-radius: 14px;
       }
-      .modal__subtitle{display:none;}
+      .ng-modal__subtitle{display:none;}
     }
   </style>
 </head>
 
 <body>
-  <div class="wrap">
-    <div class="topbar">
-      <div class="brand">
-        <span class="dot"></span>
-        <span id="brandName">StreamVault</span>
-        <span class="badge" id="partnerBadge">Partner: —</span>
-      </div>
-      <div class="badge">🔒 Paiement sécurisé</div>
-    </div>
 
-    <div class="grid">
-      <section class="hero">
-        <h1>Paiement & activation en 2 minutes.</h1>
-        <p class="sub">
-          Finalisez votre abonnement via un checkout sécurisé. Une fois payé, vous recevrez vos instructions d’activation immédiatement.
-          Support WhatsApp disponible.
-        </p>
+  <!-- Modal -->
+  <div id="whopModal" class="ng-modal" aria-hidden="true">
+    <div class="ng-modal__backdrop" onclick="closeWhopModal()"></div>
 
-        <div class="pillrow">
-          <div class="pill"><span class="check">✓</span> Activation instantanée</div>
-          <div class="pill"><span class="check">✓</span> Renouvellement simple</div>
-          <div class="pill"><span class="check">✓</span> Support WhatsApp</div>
-        </div>
-
-        <div class="ctaRow">
-          <button class="btn btnPrimary" id="payBtn">
-            Continuer vers le paiement <span aria-hidden="true">→</span>
-          </button>
-
-          <a class="btn btnGhost" id="waBtn" href="#" rel="noopener">
-            WhatsApp Support <span aria-hidden="true">💬</span>
-          </a>
-        </div>
-
-        <div class="fine">
-          Astuce : gardez WhatsApp ouvert pour recevoir l’activation. Si vous venez via un partenaire, vérifiez le code en haut.
-        </div>
-
-        <div id="successBox" class="success">
-          <b>✅ Paiement confirmé</b>
-          <div class="small">
-            Reçu: <span id="receiptIdText">Confirmé</span><br/>
-            Prochaine étape : cliquez sur “Envoyer mes infos” pour activer.
-          </div>
-
-          <div class="ctaRow" style="margin-top:12px">
-            <a class="btn btnPrimary" id="sendInfoBtn" href="#">
-              Envoyer mes infos sur WhatsApp <span aria-hidden="true">→</span>
-            </a>
-            <button class="btn btnGhost" id="closeSuccessBtn" type="button">
-              Fermer
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <aside class="side">
-        <h3>Résumé</h3>
-
-        <div class="row">
-          <div class="label">Offre</div>
-          <div class="value" id="offerName">Pro Access</div>
-        </div>
-        <div class="row">
-          <div class="label">Prix</div>
-          <div class="value" id="offerPrice">99 MAD / mois</div>
-        </div>
-        <div class="row">
-          <div class="label">Délai</div>
-          <div class="value">Instantané</div>
-        </div>
-
-        <div class="kpis">
-          <div class="kpi"><div class="t">Activation</div><div class="n">2 min</div></div>
-          <div class="kpi"><div class="t">Support</div><div class="n">WhatsApp</div></div>
-          <div class="kpi"><div class="t">Accès</div><div class="n">24/7</div></div>
-        </div>
-
-        <p class="mini">
-          Exemple lien partenaire: <b>?p=atlas</b> — cela garantit la bonne attribution.
-        </p>
-      </aside>
-    </div>
-
-    <div class="footer">
-      <div>© <span id="year"></span> <span id="brandName2">StreamVault</span>. Tous droits réservés.</div>
-      <div>Besoin d’aide ? Cliquez “WhatsApp Support”.</div>
-    </div>
-  </div>
-
-  <!-- Whop Checkout Modal -->
-  <div id="whopModal" class="modal" aria-hidden="true">
-    <div class="modal__backdrop" id="modalBackdrop"></div>
-
-    <div class="modal__panel" role="dialog" aria-modal="true" aria-label="Checkout">
-      <div class="modal__header">
+    <div class="ng-modal__panel" role="dialog" aria-modal="true" aria-label="Checkout">
+      <div class="ng-modal__header">
         <div>
-          <div class="modal__title">Secure Checkout</div>
-          <div class="modal__subtitle">Activation instantanée · Support WhatsApp</div>
+          <div class="ng-modal__title">Secure Checkout</div>
+          <div class="ng-modal__subtitle">7 days free · Cancel anytime</div>
         </div>
-        <button class="modal__close" id="modalClose" aria-label="Close checkout">✕</button>
+        <button class="ng-modal__close" onclick="closeWhopModal()" aria-label="Close checkout">✕</button>
       </div>
 
-      <!-- IMPORTANT: using checkout-id (NOT plan-id) -->
       <div
         id="whop-embedded-checkout"
-        data-whop-checkout-id="REPLACE_WITH_YOUR_CHECKOUT_ID"
-        data-whop-checkout-return-url=""
+        data-whop-checkout-plan-id="plan_bjy3o9ZScfqmY"
+        data-whop-checkout-return-url="https://nextgenaihub.net/?whop_return=1"
         data-whop-checkout-on-complete="onCheckoutComplete"
         data-whop-checkout-on-state-change="onCheckoutStateChange"
       ></div>
 
-      <div id="whopError" class="modal__error">
-        Checkout n’a pas terminé. Réessayez.
+      <div id="whopError" class="ng-modal__error">
+        Checkout didn’t complete. Please try again.
       </div>
     </div>
   </div>
 
-  <script>
-    // =========================
-    // CONFIG — change these 2
-    // =========================
-    const BRAND_NAME = "StreamVault";
-    const WHOP_CHECKOUT_ID = "REPLACE_WITH_YOUR_CHECKOUT_ID"; // <-- paste the token from https://whop.com/checkout/<THIS_PART>/
-    const WHATSAPP_NUMBER = "212600000000"; // <-- your WhatsApp number, no +
+  <!-- Optional: only shows if user closes modal -->
+  <button id="reopenBtn" class="reopen" onclick="openWhopModal()">
+    Re-open Checkout
+    <small>If you closed it by mistake</small>
+  </button>
 
-    // Return to THIS page after checkout
-    const RETURN_URL = window.location.origin + window.location.pathname + "?whop_return=1";
+<script>
+  const WHOP_PLAN_ID = "plan_bjy3o9ZScfqmY";
+  const RETURN_URL = "https://nextgenaihub.net/?whop_return=1";
 
-    // Optional display defaults (UI only)
-    const DEFAULT_OFFER = "Pro Access";
-    const DEFAULT_PRICE = "99 MAD / mois";
-
-    // Read URL params (partner)
-    const params = new URLSearchParams(location.search);
-    const partner = (params.get("p") || "").trim();     // ?p=atlas
-    const offer = (params.get("o") || "").trim();       // ?o=pro
-    const price = (params.get("price") || "").trim();   // ?price=...
-
-    // UI setup
-    document.getElementById("brandName").textContent = BRAND_NAME;
-    document.getElementById("brandName2").textContent = BRAND_NAME;
-    document.getElementById("partnerBadge").textContent = "Partner: " + (partner ? partner : "—");
-    document.getElementById("offerName").textContent = offer ? offer : DEFAULT_OFFER;
-    document.getElementById("offerPrice").textContent = price ? price : DEFAULT_PRICE;
-    document.getElementById("year").textContent = new Date().getFullYear();
-
-    // WhatsApp support link (includes context)
-    const waBtn = document.getElementById("waBtn");
-    const waText = encodeURIComponent(
-      `Salam, j'ai besoin d'aide pour l'activation.\n` +
-      `Partner: ${partner || "—"}\n` +
-      `Offre: ${document.getElementById("offerName").textContent}\n` +
-      `Page: ${location.href}`
-    );
-    waBtn.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${waText}`;
-
-    // Activation WhatsApp message after payment
-    const sendInfoBtn = document.getElementById("sendInfoBtn");
-    function buildActivationText(receiptId){
-      return encodeURIComponent(
-        `✅ Paiement effectué — merci.\n` +
-        `Partner: ${partner || "—"}\n` +
-        `Offre: ${document.getElementById("offerName").textContent}\n` +
-        `Reçu: ${receiptId || "Confirmé"}\n\n` +
-        `📌 Envoyez-moi ces infos pour l'activation:\n` +
-        `1) Votre numéro WhatsApp\n` +
-        `2) Appareil: Android / iPhone / Smart TV\n` +
-        `3) Ville (optionnel)\n`
-      );
-    }
-    function setSendInfoLink(receiptId){
-      const txt = buildActivationText(receiptId);
-      sendInfoBtn.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${txt}`;
-    }
-    setSendInfoLink("");
-
-    // Modal controls
+  function openWhopModal(){
     const modal = document.getElementById("whopModal");
-    const modalBackdrop = document.getElementById("modalBackdrop");
-    const modalClose = document.getElementById("modalClose");
-    const whopError = document.getElementById("whopError");
-    const checkoutEl = document.getElementById("whop-embedded-checkout");
-    const payBtn = document.getElementById("payBtn");
+    const checkout = document.getElementById("whop-embedded-checkout");
+    const err = document.getElementById("whopError");
+    const reopen = document.getElementById("reopenBtn");
 
-    function openModal(){
-      if (whopError) whopError.style.display = "none";
+    if (err) err.style.display = "none";
+    if (reopen) reopen.style.display = "none";
 
-      // Set checkout id + return URL
-      checkoutEl.setAttribute("data-whop-checkout-id", WHOP_CHECKOUT_ID);
-      checkoutEl.setAttribute("data-whop-checkout-return-url", RETURN_URL);
+    checkout.setAttribute("data-whop-checkout-plan-id", WHOP_PLAN_ID);
+    checkout.setAttribute("data-whop-checkout-return-url", RETURN_URL);
 
-      modal.classList.add("is-open");
-      modal.setAttribute("aria-hidden","false");
-      document.body.style.overflow = "hidden";
-      document.documentElement.style.overflow = "hidden";
+    modal.classList.add("is-open");
+    modal.setAttribute("aria-hidden", "false");
+  }
+
+  function closeWhopModal(){
+    const modal = document.getElementById("whopModal");
+    const reopen = document.getElementById("reopenBtn");
+
+    modal.classList.remove("is-open");
+    modal.setAttribute("aria-hidden", "true");
+
+    // Optional re-open button (remove if you want pure modal)
+    if (reopen) reopen.style.display = "block";
+  }
+
+  // ESC to close
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeWhopModal();
+  });
+
+  // Whop callbacks
+  window.onCheckoutComplete = (planId, receiptId) => {
+    // You can redirect to success page if you want:
+    // window.location.href = "/success.html";
+    // For now just close:
+    closeWhopModal();
+    console.log("Checkout complete:", { planId, receiptId });
+  };
+
+  window.onCheckoutStateChange = (state) => {
+    // console.log("Whop state:", state);
+  };
+
+  // Handle return URL (optional)
+  (function handleWhopReturn(){
+    const url = new URL(window.location.href);
+    const whopReturn = url.searchParams.get("whop_return");
+    const status = url.searchParams.get("status");
+    if (!whopReturn) return;
+
+    url.searchParams.delete("whop_return");
+    url.searchParams.delete("status");
+    window.history.replaceState({}, "", url.toString());
+
+    if (status !== "success") {
+      const err = document.getElementById("whopError");
+      if (err) err.style.display = "block";
+      openWhopModal();
     }
-    function closeModal(){
-      modal.classList.remove("is-open");
-      modal.setAttribute("aria-hidden","true");
-      document.body.style.overflow = "";
-      document.documentElement.style.overflow = "";
-    }
+  })();
 
-    payBtn.addEventListener("click", openModal);
-    modalBackdrop.addEventListener("click", closeModal);
-    modalClose.addEventListener("click", closeModal);
-    window.addEventListener("keydown", (e)=>{
-      if (e.key === "Escape" && modal.classList.contains("is-open")) closeModal();
-    });
+  // Auto-open on load
+  window.addEventListener("load", () => {
+    openWhopModal();
+  });
+</script>
 
-    // Whop callbacks (may or may not fire depending on checkout type; we keep it)
-    window.onCheckoutComplete = (checkoutId, receiptId) => {
-      closeModal();
-
-      localStorage.setItem("sv_paid", "true");
-      localStorage.setItem("sv_whop_checkout_id", checkoutId || "");
-      localStorage.setItem("sv_whop_receipt_id", receiptId || "");
-
-      const receiptEl = document.getElementById("receiptIdText");
-      if (receiptEl) receiptEl.textContent = receiptId ? receiptId : "Confirmé";
-
-      setSendInfoLink(receiptId || "");
-
-      const box = document.getElementById("successBox");
-      if (box) box.style.display = "block";
-      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
-    };
-
-    window.onCheckoutStateChange = (state) => {
-      // optional debug:
-      // console.log("Whop state:", state);
-    };
-
-    document.getElementById("closeSuccessBtn").addEventListener("click", ()=>{
-      const box = document.getElementById("successBox");
-      if (box) box.style.display = "none";
-    });
-
-    // Return URL handler
-    (function handleWhopReturn(){
-      const url = new URL(window.location.href);
-      const whopReturn = url.searchParams.get("whop_return");
-      if (!whopReturn) return;
-
-      url.searchParams.delete("whop_return");
-      window.history.replaceState({}, "", url.toString());
-
-      const paid = localStorage.getItem("sv_paid") === "true";
-      if (paid){
-        const rid = localStorage.getItem("sv_whop_receipt_id") || "Confirmé";
-        document.getElementById("receiptIdText").textContent = rid;
-        setSendInfoLink(rid);
-        document.getElementById("successBox").style.display = "block";
-      }
-    })();
-  </script>
 </body>
 </html>
