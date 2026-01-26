@@ -17,7 +17,6 @@
   <style>
     :root{
       --bg:#070a14;
-      --panel:#0b1020;
       --card: rgba(255,255,255,.06);
       --stroke: rgba(255,255,255,.12);
       --text:#eef0ff;
@@ -72,7 +71,7 @@
     }
     @media (max-width: 900px){ .grid{grid-template-columns:1fr} }
 
-    .hero,.card{
+    .hero,.side{
       border:1px solid var(--stroke);
       background:rgba(11,16,32,.55);
       backdrop-filter: blur(10px);
@@ -142,8 +141,8 @@
     .btnGhost:hover{background:rgba(255,255,255,.06)}
     .fine{color:var(--muted);font-size:12px;line-height:1.4;margin-top:10px}
 
-    .card{padding:18px}
-    .card h3{margin:0 0 10px;font-size:16px}
+    .side{padding:18px}
+    .side h3{margin:0 0 10px;font-size:16px}
     .row{
       display:flex;justify-content:space-between;align-items:center;
       gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.08);
@@ -258,7 +257,7 @@
       <div class="brand">
         <span class="dot"></span>
         <span id="brandName">StreamVault</span>
-        <span class="badge" id="partnerBadge" title="Source partenaire">Partner: —</span>
+        <span class="badge" id="partnerBadge">Partner: —</span>
       </div>
       <div class="badge">🔒 Paiement sécurisé</div>
     </div>
@@ -309,7 +308,7 @@
         </div>
       </section>
 
-      <aside class="card">
+      <aside class="side">
         <h3>Résumé</h3>
 
         <div class="row">
@@ -356,10 +355,11 @@
         <button class="modal__close" id="modalClose" aria-label="Close checkout">✕</button>
       </div>
 
+      <!-- IMPORTANT: using checkout-id (NOT plan-id) -->
       <div
         id="whop-embedded-checkout"
-        data-whop-checkout-plan-id="REPLACE_PLAN_ID"
-        data-whop-checkout-return-url="https://example.com/?whop_return=1"
+        data-whop-checkout-id="REPLACE_WITH_YOUR_CHECKOUT_ID"
+        data-whop-checkout-return-url=""
         data-whop-checkout-on-complete="onCheckoutComplete"
         data-whop-checkout-on-state-change="onCheckoutStateChange"
       ></div>
@@ -372,25 +372,24 @@
 
   <script>
     // =========================
-    // CONFIG — change these
+    // CONFIG — change these 2
     // =========================
     const BRAND_NAME = "StreamVault";
-    const WHOP_PLAN_ID = "plan_bjy3o9ZScfqmY"; // <-- your Whop plan id
-    const WHATSAPP_NUMBER = "212600000000";    // <-- your WhatsApp number (no +)
-    // Return URL should be THIS page (GitHub Pages) so user comes back after checkout
+    const WHOP_CHECKOUT_ID = "REPLACE_WITH_YOUR_CHECKOUT_ID"; // <-- paste the token from https://whop.com/checkout/<THIS_PART>/
+    const WHATSAPP_NUMBER = "212600000000"; // <-- your WhatsApp number, no +
+
+    // Return to THIS page after checkout
     const RETURN_URL = window.location.origin + window.location.pathname + "?whop_return=1";
 
     // Optional display defaults (UI only)
     const DEFAULT_OFFER = "Pro Access";
     const DEFAULT_PRICE = "99 MAD / mois";
 
-    // =========================
     // Read URL params (partner)
-    // =========================
     const params = new URLSearchParams(location.search);
     const partner = (params.get("p") || "").trim();     // ?p=atlas
     const offer = (params.get("o") || "").trim();       // ?o=pro
-    const price = (params.get("price") || "").trim();   // ?price=99%20MAD%20%2F%20mois
+    const price = (params.get("price") || "").trim();   // ?price=...
 
     // UI setup
     document.getElementById("brandName").textContent = BRAND_NAME;
@@ -410,7 +409,7 @@
     );
     waBtn.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${waText}`;
 
-    // Success send-info button (user sends their data)
+    // Activation WhatsApp message after payment
     const sendInfoBtn = document.getElementById("sendInfoBtn");
     function buildActivationText(receiptId){
       return encodeURIComponent(
@@ -420,20 +419,17 @@
         `Reçu: ${receiptId || "Confirmé"}\n\n` +
         `📌 Envoyez-moi ces infos pour l'activation:\n` +
         `1) Votre numéro WhatsApp\n` +
-        `2) Nom/Prénom (optionnel)\n` +
-        `3) Appareil: Android / iPhone / Smart TV\n` +
-        `4) Ville (optionnel)\n`
+        `2) Appareil: Android / iPhone / Smart TV\n` +
+        `3) Ville (optionnel)\n`
       );
     }
     function setSendInfoLink(receiptId){
       const txt = buildActivationText(receiptId);
       sendInfoBtn.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${txt}`;
     }
-    setSendInfoLink(""); // default
+    setSendInfoLink("");
 
-    // =========================
     // Modal controls
-    // =========================
     const modal = document.getElementById("whopModal");
     const modalBackdrop = document.getElementById("modalBackdrop");
     const modalClose = document.getElementById("modalClose");
@@ -444,8 +440,8 @@
     function openModal(){
       if (whopError) whopError.style.display = "none";
 
-      // Ensure correct plan + return url
-      checkoutEl.setAttribute("data-whop-checkout-plan-id", WHOP_PLAN_ID);
+      // Set checkout id + return URL
+      checkoutEl.setAttribute("data-whop-checkout-id", WHOP_CHECKOUT_ID);
       checkoutEl.setAttribute("data-whop-checkout-return-url", RETURN_URL);
 
       modal.classList.add("is-open");
@@ -463,24 +459,18 @@
     payBtn.addEventListener("click", openModal);
     modalBackdrop.addEventListener("click", closeModal);
     modalClose.addEventListener("click", closeModal);
-
-    // ESC to close
     window.addEventListener("keydown", (e)=>{
       if (e.key === "Escape" && modal.classList.contains("is-open")) closeModal();
     });
 
-    // =========================
-    // Whop callbacks
-    // =========================
-    window.onCheckoutComplete = (planId, receiptId) => {
+    // Whop callbacks (may or may not fire depending on checkout type; we keep it)
+    window.onCheckoutComplete = (checkoutId, receiptId) => {
       closeModal();
 
-      // Store local proof (UI-level)
       localStorage.setItem("sv_paid", "true");
-      localStorage.setItem("sv_whop_plan_id", planId || "");
+      localStorage.setItem("sv_whop_checkout_id", checkoutId || "");
       localStorage.setItem("sv_whop_receipt_id", receiptId || "");
 
-      // Show success box
       const receiptEl = document.getElementById("receiptIdText");
       if (receiptEl) receiptEl.textContent = receiptId ? receiptId : "Confirmé";
 
@@ -492,39 +482,30 @@
     };
 
     window.onCheckoutStateChange = (state) => {
-      // Optional: console.log("Whop state:", state);
+      // optional debug:
+      // console.log("Whop state:", state);
     };
 
-    // Close success
     document.getElementById("closeSuccessBtn").addEventListener("click", ()=>{
       const box = document.getElementById("successBox");
       if (box) box.style.display = "none";
     });
 
-    // =========================
-    // Handle return URL (optional)
-    // =========================
+    // Return URL handler
     (function handleWhopReturn(){
       const url = new URL(window.location.href);
       const whopReturn = url.searchParams.get("whop_return");
-
       if (!whopReturn) return;
 
-      // Clean URL
       url.searchParams.delete("whop_return");
       window.history.replaceState({}, "", url.toString());
 
-      // If we have local receipt, show success box
       const paid = localStorage.getItem("sv_paid") === "true";
       if (paid){
         const rid = localStorage.getItem("sv_whop_receipt_id") || "Confirmé";
         document.getElementById("receiptIdText").textContent = rid;
         setSendInfoLink(rid);
         document.getElementById("successBox").style.display = "block";
-      } else {
-        // If no local proof, just reopen modal so user can try again
-        if (whopError) whopError.style.display = "block";
-        openModal();
       }
     })();
   </script>
