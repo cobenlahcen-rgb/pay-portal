@@ -1,16 +1,12 @@
-<!doctype html>
-<html lang="fr">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Secure Checkout — StreamVault</title>
+  <meta charset="UTF-8" />
+  <title>StreamVault — Secure Checkout</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- Whop Embedded Checkout Loader -->
   <script async defer src="https://js.whop.com/static/checkout/loader.js"></script>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800&display=swap" rel="stylesheet">
 
   <style>
     :root{
@@ -27,16 +23,17 @@
         radial-gradient(700px 380px at 85% 0%,rgba(74,222,128,.16),transparent 55%),
         var(--bg);
       color:var(--text);
-      overflow:hidden;
+      overflow:hidden; /* prevent background scroll */
     }
 
+    /* Optional tiny re-open button (only appears if user closes modal) */
     .reopen{
       position:fixed;
       left:50%;
       top:50%;
       transform:translate(-50%,-50%);
       display:none;
-      padding:14px 18px;
+      padding:12px 16px;
       border-radius:14px;
       border:1px solid rgba(255,255,255,.12);
       background:rgba(255,255,255,.06);
@@ -44,32 +41,17 @@
       cursor:pointer;
       font-weight:900;
       box-shadow:0 30px 90px rgba(0,0,0,.62);
-      text-align:left;
-      width:min(420px, calc(100% - 26px));
     }
-    .reopen small{display:block;color:var(--muted);font-weight:600;margin-top:6px;line-height:1.4}
-    .reopen .row{display:flex;justify-content:space-between;align-items:center;gap:10px}
-    .reopen .brand{font-weight:900}
-    .reopen .partner{font-size:12px;color:var(--muted)}
+    .reopen small{display:block;color:var(--muted);font-weight:600;margin-top:4px}
 
-    .links{
-      display:flex;gap:10px;flex-wrap:wrap;margin-top:10px
+    /* =========================
+       Modal — match your screenshot + internal scroll
+       ========================= */
+    .ng-modal{
+      position:fixed; inset:0;
+      display:none;
+      z-index:9999;
     }
-    .linkBtn{
-      flex:1;
-      display:inline-flex;align-items:center;justify-content:center;
-      padding:10px 12px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(0,0,0,.18);
-      color:var(--text);
-      text-decoration:none;
-      font-weight:800;
-    }
-    .linkBtn:hover{background:rgba(0,0,0,.26)}
-
-    /* ===== Modal ===== */
-    .ng-modal{position:fixed; inset:0; display:none; z-index:9999;}
     .ng-modal.is-open{display:block}
 
     .ng-modal__backdrop{
@@ -98,8 +80,17 @@
       background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,0));
       display:flex; align-items:center; justify-content:space-between; gap:12px;
     }
-    .ng-modal__title{font-weight:1000;font-size:14px;letter-spacing:-.2px}
-    .ng-modal__subtitle{opacity:.75;font-size:12px;white-space:nowrap}
+
+    .ng-modal__title{
+      font-weight:1000;
+      font-size:14px;
+      letter-spacing:-.2px;
+    }
+    .ng-modal__subtitle{
+      opacity:.75;
+      font-size:12px;
+      white-space:nowrap;
+    }
 
     .ng-modal__close{
       width:40px;height:40px;border-radius:12px;
@@ -110,12 +101,19 @@
     }
     .ng-modal__close:hover{ background:rgba(255,255,255,.10); }
 
+    /* Checkout iframe container: scroll INSIDE like screenshot */
     #whop-embedded-checkout{
       flex:1;
       min-height:0;
       overflow:auto;
       -webkit-overflow-scrolling: touch;
       background:#fff;
+    }
+
+    #whop-embedded-checkout::-webkit-scrollbar{ width:10px; }
+    #whop-embedded-checkout::-webkit-scrollbar-thumb{
+      background: rgba(0,0,0,.18);
+      border-radius: 999px;
     }
 
     .ng-modal__error{
@@ -146,21 +144,21 @@
 
   <!-- Modal -->
   <div id="whopModal" class="ng-modal" aria-hidden="true">
-    <div class="ng-modal__backdrop" id="backdrop"></div>
+    <div class="ng-modal__backdrop" onclick="closeWhopModal()"></div>
 
     <div class="ng-modal__panel" role="dialog" aria-modal="true" aria-label="Checkout">
       <div class="ng-modal__header">
         <div>
-          <div class="ng-modal__title" id="modalTitle">Secure Checkout</div>
-          <div class="ng-modal__subtitle" id="modalSub">Paiement sécurisé · Support WhatsApp</div>
+          <div class="ng-modal__title">StreamVault — Secure Checkout</div>
+          <div class="ng-modal__subtitle">Paiement sécurisé · Support WhatsApp</div>
         </div>
-        <button class="ng-modal__close" id="closeBtn" aria-label="Close checkout">✕</button>
+        <button class="ng-modal__close" onclick="closeWhopModal()" aria-label="Close checkout">✕</button>
       </div>
 
       <div
         id="whop-embedded-checkout"
-        data-whop-checkout-plan-id=""
-        data-whop-checkout-return-url=""
+        data-whop-checkout-plan-id="plan_bjy3o9ZScfqmY"
+        data-whop-checkout-return-url="https://nextgenaihub.net/?whop_return=1"
         data-whop-checkout-on-complete="onCheckoutComplete"
         data-whop-checkout-on-state-change="onCheckoutStateChange"
       ></div>
@@ -171,63 +169,25 @@
     </div>
   </div>
 
-  <!-- Reopen box -->
-  <button id="reopenBtn" class="reopen" type="button">
-    <div class="row">
-      <div class="brand" id="brandLabel">StreamVault</div>
-      <div class="partner" id="partnerLabel">Partner: —</div>
-    </div>
-    <small>
-      Le paiement s’ouvre dans une fenêtre sécurisée.<br/>
-      Si vous l’avez fermé par erreur, cliquez pour ré-ouvrir.
-    </small>
-
-    <div class="links">
-      <span class="linkBtn" id="reopenAction">Re-open Checkout</span>
-      <a class="linkBtn" id="waSupport" href="#" rel="noopener">WhatsApp Support</a>
-    </div>
+  <!-- Optional: only shows if user closes modal -->
+  <button id="reopenBtn" class="reopen" onclick="openWhopModal()">
+    Re-open Checkout
+    <small>If you closed it by mistake</small>
   </button>
 
 <script>
-  // =========================
-  // EDIT THESE
-  // =========================
-  const BRAND_NAME = "StreamVault";
-  const WHOP_PLAN_ID = "plan_bjy3o9ZScfqmY";   // your plan id
-  const WHATSAPP_NUMBER = "212600000000";      // your whatsapp (no +)
-
-  // Partner tracking
-  const qs = new URLSearchParams(location.search);
-  const partner = (qs.get("p") || "").trim(); // ?p=atlas
-
-  // Return to THIS page (same domain) so it never breaks
-  const RETURN_URL = location.origin + location.pathname + "?whop_return=1" + (partner ? "&p=" + encodeURIComponent(partner) : "");
-
-  // UI
-  document.getElementById("brandLabel").textContent = BRAND_NAME;
-  document.getElementById("partnerLabel").textContent = "Partner: " + (partner || "—");
-  document.getElementById("modalTitle").textContent = BRAND_NAME + " — Secure Checkout";
-
-  // WhatsApp support link
-  const waMsg = encodeURIComponent(
-    `Salam, j'ai besoin d'aide pour le paiement/activation.\n` +
-    `Partner: ${partner || "—"}\n` +
-    `Page: ${location.href}`
-  );
-  document.getElementById("waSupport").href = `https://wa.me/${WHATSAPP_NUMBER}?text=${waMsg}`;
-
-  // Modal logic
-  const modal = document.getElementById("whopModal");
-  const checkout = document.getElementById("whop-embedded-checkout");
-  const err = document.getElementById("whopError");
-  const reopenBtn = document.getElementById("reopenBtn");
-  const reopenAction = document.getElementById("reopenAction");
+  const WHOP_PLAN_ID = "plan_bjy3o9ZScfqmY";
+  const RETURN_URL = "https://nextgenaihub.net/?whop_return=1";
 
   function openWhopModal(){
-    if (err) err.style.display = "none";
-    if (reopenBtn) reopenBtn.style.display = "none";
+    const modal = document.getElementById("whopModal");
+    const checkout = document.getElementById("whop-embedded-checkout");
+    const err = document.getElementById("whopError");
+    const reopen = document.getElementById("reopenBtn");
 
-    // Critical: set attributes BEFORE opening (more reliable)
+    if (err) err.style.display = "none";
+    if (reopen) reopen.style.display = "none";
+
     checkout.setAttribute("data-whop-checkout-plan-id", WHOP_PLAN_ID);
     checkout.setAttribute("data-whop-checkout-return-url", RETURN_URL);
 
@@ -236,59 +196,49 @@
   }
 
   function closeWhopModal(){
+    const modal = document.getElementById("whopModal");
+    const reopen = document.getElementById("reopenBtn");
+
     modal.classList.remove("is-open");
     modal.setAttribute("aria-hidden", "true");
 
-    // show reopen box
-    if (reopenBtn) reopenBtn.style.display = "block";
+    // Optional re-open button (remove if you want pure modal)
+    if (reopen) reopen.style.display = "block";
   }
 
-  document.getElementById("backdrop").addEventListener("click", closeWhopModal);
-  document.getElementById("closeBtn").addEventListener("click", closeWhopModal);
-  reopenBtn.addEventListener("click", openWhopModal);
-  reopenAction.addEventListener("click", openWhopModal);
-
+  // ESC to close
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") closeWhopModal();
   });
 
   // Whop callbacks
   window.onCheckoutComplete = (planId, receiptId) => {
-    // Close + show a light confirmation (client still needs activation via WhatsApp)
+    // You can redirect to success page if you want:
+    // window.location.href = "/success.html";
+    // For now just close:
     closeWhopModal();
     console.log("Checkout complete:", { planId, receiptId });
-
-    // Optional: automatically open WhatsApp to send receipt
-    const msg = encodeURIComponent(
-      `✅ Paiement effectué.\nPartner: ${partner || "—"}\nReçu: ${receiptId || "Confirmé"}\n\n` +
-      `Envoyez-moi votre WhatsApp + appareil pour activation.`
-    );
-    window.location.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
   };
 
   window.onCheckoutStateChange = (state) => {
     // console.log("Whop state:", state);
   };
 
-  // Return handler
+  // Handle return URL (optional)
   (function handleWhopReturn(){
     const url = new URL(window.location.href);
     const whopReturn = url.searchParams.get("whop_return");
     const status = url.searchParams.get("status");
-
     if (!whopReturn) return;
 
-    // Clean URL but keep partner
     url.searchParams.delete("whop_return");
     url.searchParams.delete("status");
     window.history.replaceState({}, "", url.toString());
 
-    if (status && status !== "success") {
+    if (status !== "success") {
+      const err = document.getElementById("whopError");
       if (err) err.style.display = "block";
       openWhopModal();
-    } else {
-      // If success but callback didn't fire, just show reopen + WhatsApp support
-      closeWhopModal();
     }
   })();
 
